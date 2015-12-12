@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/scality/bucketclient/issues"
   },
-  "homepage": "https://github.com/scality/bucketclient#readme"
+  "homepage": "https://github.com/scality/bucketclient#readme",
+  "dependencies": {
+    "winston": "^1.1.0"
+  }
 }

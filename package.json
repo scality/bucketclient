@@ -1,0 +1,20 @@
+{
+  "name": "bucketclient",
+  "version": "0.0.1",
+  "description": "Bucket Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "scality/bucketclient",
+  "keywords": [
+    "dbd",
+    "raft"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scality/bucketclient/issues"
+  },
+  "homepage": "https://github.com/scality/bucketclient#readme"
+}

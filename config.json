@@ -1,0 +1,9 @@
+{
+  "bootstrap": [
+    "connectora.ringr2.devsca.com",
+    "connectorb.ringr2.devsca.com",
+    "connectorc.ringr2.devsca.com",
+    "connectord.ringr2.devsca.com",
+    "connectore.ringr2.devsca.com"
+  ]
+}

@@ -4,7 +4,7 @@
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/unit"
   },
   "repository": "scality/bucketclient",
   "keywords": [
@@ -17,7 +17,11 @@
     "url": "https://github.com/scality/bucketclient/issues"
   },
   "homepage": "https://github.com/scality/bucketclient#readme",
+  "devDependencies": {
+    "mocha": ""
+  },
   "dependencies": {
+    "arsenal": "scality/IronMan-Arsenal",
     "winston": "^1.1.0"
   }
 }

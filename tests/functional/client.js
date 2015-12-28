@@ -8,7 +8,7 @@ describe('Bucket Client tests', function testClient() {
     let client;
 
     before('Create the client', () => {
-        client = new BucketClient();
+        client = new BucketClient([ "localhost", ]);
     });
 
     it('should create a new bucket', done => {

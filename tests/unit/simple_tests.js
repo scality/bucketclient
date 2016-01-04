@@ -49,13 +49,13 @@ describe('Unit tests with mockup server', function tests() {
     afterEach('stop server', () => { server.close(); });
 
     it('should create a new non-existing bucket', done => {
-        client.createBucket(nonExistBucket.name, { status: 'dead' }, (err) => {
+        client.createBucket(nonExistBucket.name, '{ status: "dead" }', (err) => {
             done(err);
         });
     });
 
     it('should try to create an already existing bucket and fail', done => {
-        client.createBucket(existBucket.name, {}, (err) => {
+        client.createBucket(existBucket.name, '{}', (err) => {
             if (err) {
                 const error = new Error('BucketAlreadyExists');
                 error.isExpected = true;
@@ -68,7 +68,8 @@ describe('Unit tests with mockup server', function tests() {
 
     it('should get an existing bucket', done => {
         client.getBucketAttributes(existBucket.name, (err, data) => {
-            assert.deepStrictEqual(data, existBucket.value);
+            const ret = JSON.parse(data);
+            assert.deepStrictEqual(ret, existBucket.value);
             done(err);
         });
     });
@@ -86,7 +87,7 @@ describe('Unit tests with mockup server', function tests() {
     });
 
     it('should delete an existing bucket', done => {
-        client.deleteBucket(existBucket.name, err => done(err));
+        client.deleteBucket(existBucket.name, done);
     });
 
     it('should fetch non-existing bucket, sending back an error', done => {

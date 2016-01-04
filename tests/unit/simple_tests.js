@@ -6,6 +6,7 @@ const RESTClient = require('../../index.js').RESTClient;
 
 const existBucket = { name: 'Zaphod', value: { status: 'alive' } };
 const nonExistBucket = { name: 'Ford' };
+const reqUids = 'REQ1';
 
 function makeResponse(res, code, message) {
     res.statusCode = code;
@@ -49,13 +50,12 @@ describe('Unit tests with mockup server', function tests() {
     afterEach('stop server', () => { server.close(); });
 
     it('should create a new non-existing bucket', done => {
-        client.createBucket(nonExistBucket.name, '{ status: "dead" }', (err) => {
-            done(err);
-        });
+        client.createBucket(nonExistBucket.name, reqUids,
+                            '{ status: "dead" }', done);
     });
 
     it('should try to create an already existing bucket and fail', done => {
-        client.createBucket(existBucket.name, '{}', (err) => {
+        client.createBucket(existBucket.name, reqUids, '{}', (err) => {
             if (err) {
                 const error = new Error('BucketAlreadyExists');
                 error.isExpected = true;
@@ -67,7 +67,7 @@ describe('Unit tests with mockup server', function tests() {
     });
 
     it('should get an existing bucket', done => {
-        client.getBucketAttributes(existBucket.name, (err, data) => {
+        client.getBucketAttributes(existBucket.name, reqUids, (err, data) => {
             const ret = JSON.parse(data);
             assert.deepStrictEqual(ret, existBucket.value);
             done(err);
@@ -75,7 +75,7 @@ describe('Unit tests with mockup server', function tests() {
     });
 
     it('should fetch non-existing bucket, sending back an error', done => {
-        client.getBucketAttributes(nonExistBucket.name, (err) => {
+        client.getBucketAttributes(nonExistBucket.name, reqUids, (err) => {
             if (err) {
                 const error = new Error('NoSuchBucket');
                 error.isExpected = true;
@@ -87,11 +87,11 @@ describe('Unit tests with mockup server', function tests() {
     });
 
     it('should delete an existing bucket', done => {
-        client.deleteBucket(existBucket.name, done);
+        client.deleteBucket(existBucket.name, reqUids, done);
     });
 
     it('should fetch non-existing bucket, sending back an error', done => {
-        client.deleteBucket(nonExistBucket.name, err => {
+        client.deleteBucket(nonExistBucket.name, reqUids, err => {
             if (err) {
                 const error = new Error('NoSuchBucket');
                 error.isExpected = true;

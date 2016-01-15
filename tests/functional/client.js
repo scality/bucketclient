@@ -5,6 +5,7 @@ const BucketClient = require('../../index').RESTClient;
 
 const bucketName = 'HanSolo';
 const bucketAttributes = { status: 'dead' };
+const reqUids = 'REQ1';
 
 describe('Bucket Client tests', function testClient() {
     this.timeout(0);
@@ -15,12 +16,15 @@ describe('Bucket Client tests', function testClient() {
     });
 
     it('should create a new bucket', done => {
-        client.createBucket(bucketName, JSON.stringify(bucketAttributes),
-                            done);
+        client.createBucket(bucketName, reqUids,
+                            JSON.stringify(bucketAttributes), done);
     });
 
     it('should try to create the same bucket and fail', done => {
-        client.createBucket(bucketName, JSON.stringify(bucketAttributes),
+        client.createBucket(
+            bucketName,
+            reqUids,
+            JSON.stringify(bucketAttributes),
             err => {
                 if (err) {
                     const error = new Error(409);
@@ -31,9 +35,8 @@ describe('Bucket Client tests', function testClient() {
                 done('Did not fail as expected');
             });
     });
-
     it('should get the created bucket', done => {
-        client.getBucketAttributes(bucketName, (err, data) => {
+        client.getBucketAttributes(bucketName, reqUids, (err, data) => {
             const ret = JSON.parse(data);
             if (ret.status !== 'dead') {
                 return done(new Error('Did not fetch the data correctly'));
@@ -43,13 +46,13 @@ describe('Bucket Client tests', function testClient() {
     });
 
     it('should delete the created bucket', done => {
-        client.deleteBucket(bucketName, (err) => {
+        client.deleteBucket(bucketName, reqUids, (err) => {
             done(err);
         });
     });
 
     it('should fetch non-existing bucket, sending back an error', done => {
-        client.getBucketAttributes(bucketName, (err) => {
+        client.getBucketAttributes(bucketName, reqUids, (err) => {
             if (err) {
                 const error = new Error(404);
                 error.isExpected = true;

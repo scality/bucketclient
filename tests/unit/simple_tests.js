@@ -3,8 +3,18 @@
 const assert = require('assert');
 const http = require('http');
 const RESTClient = require('../../index.js').RESTClient;
-
-const existBucket = { name: 'Zaphod', value: { status: 'alive' } };
+const existBucket = { 
+    name: 'Zaphod',
+    value: { status: 'alive' }, 
+    raftInformation: {
+            term: 1,
+            cseq: 0,
+            aseq: 5,
+            prune: 0,
+            ip: '127.0.0.1',
+            port: 4242
+    }
+};
 const nonExistBucket = { name: 'Ford' };
 const reqUids = 'REQ1';
 
@@ -24,6 +34,9 @@ function handler(req, res) {
         if (req.url === `/default/attributes/${existBucket.name}`) {
             makeResponse(res, 200, 'OK');
             res.write(JSON.stringify(existBucket.value));
+        } else if (req.url === `/default/informations/${existBucket.name}`) {
+           makeResponse(res, 200, 'OK');
+           return res.end(JSON.stringify(existBucket.raftInformation));
         } else {
             makeResponse(res, 404, 'NoSuchBucket');
         }
@@ -70,6 +83,24 @@ describe('Unit tests with mockup server', function tests() {
         client.getBucketAttributes(existBucket.name, reqUids, (err, data) => {
             const ret = JSON.parse(data);
             assert.deepStrictEqual(ret, existBucket.value);
+            done(err);
+        });
+    });
+
+    it('should get Raft informations on an existing bucket', done => {
+        client.getRaftInformation(existBucket.name, reqUids, (err, data) => {
+            const ret = JSON.parse(data);
+            assert.deepStrictEqual(ret, existBucket.raftInformation);
+            done(err);
+        });
+    });
+
+    it('should get Raft informations on an existing bucket', done => {
+        client.getRaftInformation(nonExistBucket.name, reqUids, (err, data) => {
+            const error = new Error('NoSuchBucket');
+            error.isExpected = true;
+            assert.deepStrictEqual(err, error);
+            return done();
             done(err);
         });
     });

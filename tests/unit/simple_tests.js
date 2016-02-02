@@ -72,6 +72,7 @@ describe('Unit tests with mockup server', function tests() {
             if (err) {
                 const error = new Error('BucketAlreadyExists');
                 error.isExpected = true;
+                error.code = 409;
                 assert.deepStrictEqual(err, error);
                 return done();
             }
@@ -95,10 +96,11 @@ describe('Unit tests with mockup server', function tests() {
         });
     });
 
-    it('should get Raft informations on an existing bucket', done => {
+    it('should get Raft informations on an unexisting bucket', done => {
         client.getRaftInformation(nonExistBucket.name, reqUids, (err, data) => {
             const error = new Error('NoSuchBucket');
             error.isExpected = true;
+            error.code = 404;
             assert.deepStrictEqual(err, error);
             return done();
             done(err);
@@ -110,6 +112,7 @@ describe('Unit tests with mockup server', function tests() {
             if (err) {
                 const error = new Error('NoSuchBucket');
                 error.isExpected = true;
+                error.code = 404;
                 assert.deepStrictEqual(err, error);
                 return done();
             }
@@ -126,6 +129,7 @@ describe('Unit tests with mockup server', function tests() {
             if (err) {
                 const error = new Error('NoSuchBucket');
                 error.isExpected = true;
+                error.code = 404;
                 assert.deepStrictEqual(err, error);
                 return done();
             }

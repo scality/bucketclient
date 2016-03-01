@@ -1,6 +1,6 @@
 {
   "name": "bucketclient",
-  "version": "0.0.1",
+  "version": "1.0.0-beta",
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {

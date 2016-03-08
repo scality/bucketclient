@@ -1,5 +1,6 @@
 'use strict';
 
+const errors = require('arsenal').errors;
 const assert = require('assert');
 const http = require('http');
 const RESTClient = require('../../index.js').RESTClient;
@@ -70,9 +71,8 @@ describe('Unit tests with mockup server', function tests() {
     it('should try to create an already existing bucket and fail', done => {
         client.createBucket(existBucket.name, reqUids, '{}', (err) => {
             if (err) {
-                const error = new Error('BucketAlreadyExists');
+                const error = errors.BucketAlreadyExists;
                 error.isExpected = true;
-                error.code = 409;
                 assert.deepStrictEqual(err, error);
                 return done();
             }
@@ -98,9 +98,8 @@ describe('Unit tests with mockup server', function tests() {
 
     it('should get Raft informations on an unexisting bucket', done => {
         client.getRaftInformation(nonExistBucket.name, reqUids, (err, data) => {
-            const error = new Error('NoSuchBucket');
+            const error = errors.NoSuchBucket;
             error.isExpected = true;
-            error.code = 404;
             assert.deepStrictEqual(err, error);
             return done();
             done(err);
@@ -110,9 +109,8 @@ describe('Unit tests with mockup server', function tests() {
     it('should fetch non-existing bucket, sending back an error', done => {
         client.getBucketAttributes(nonExistBucket.name, reqUids, (err) => {
             if (err) {
-                const error = new Error('NoSuchBucket');
+                const error = errors.NoSuchBucket;
                 error.isExpected = true;
-                error.code = 404;
                 assert.deepStrictEqual(err, error);
                 return done();
             }
@@ -127,9 +125,8 @@ describe('Unit tests with mockup server', function tests() {
     it('should fetch non-existing bucket, sending back an error', done => {
         client.deleteBucket(nonExistBucket.name, reqUids, err => {
             if (err) {
-                const error = new Error('NoSuchBucket');
+                const error = errors.NoSuchBucket;
                 error.isExpected = true;
-                error.code = 404;
                 assert.deepStrictEqual(err, error);
                 return done();
             }

@@ -1,3 +1,8 @@
+general:
+  branches:
+    ignore:
+      - /^ultron\/.*/ # Ignore ultron/* branches
+
 machine:
   node:
     version: 4.2

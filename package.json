@@ -23,7 +23,6 @@
   "dependencies": {
     "arsenal": "scality/IronMan-Arsenal#rel/1.0",
     "bunyan-logstash": "^0.3.4",
-    "werelogs": "scality/werelogs#rel/1.0",
-    "winston": "^1.1.0"
+    "werelogs": "scality/werelogs#rel/1.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "bucketclient",
-  "version": "1.0.0-beta",
+  "version": "1.0.1-beta2",
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,6 @@
   "dependencies": {
     "arsenal": "scality/IronMan-Arsenal",
     "bunyan-logstash": "^0.3.4",
-    "werelogs": "scality/werelogs",
-    "winston": "^1.1.0"
+    "werelogs": "scality/werelogs"
   }
 }

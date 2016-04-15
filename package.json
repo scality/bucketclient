@@ -4,6 +4,7 @@
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
+    "ft_test": "mocha tests/functional",
     "test": "mocha tests/unit"
   },
   "repository": "scality/bucketclient",

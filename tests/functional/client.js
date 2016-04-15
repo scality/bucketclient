@@ -1,5 +1,6 @@
 'use strict'; // eslint-disable-line strict
 const assert = require('assert');
+const errors = require('arsenal').errors;
 
 const BucketClient = require('../../index').RESTClient;
 
@@ -27,9 +28,8 @@ describe('Bucket Client tests', function testClient() {
             JSON.stringify(bucketAttributes),
             err => {
                 if (err) {
-                    const error = new Error(409);
-                    error.isExpected = true;
-                    assert.deepStrictEqual(err, error);
+                    errors.BucketAlreadyExists.isExpected = true;
+                    assert.deepStrictEqual(err, errors.BucketAlreadyExists);
                     return done();
                 }
                 done('Did not fail as expected');
@@ -54,9 +54,8 @@ describe('Bucket Client tests', function testClient() {
     it('should fetch non-existing bucket, sending back an error', done => {
         client.getBucketAttributes(bucketName, reqUids, (err) => {
             if (err) {
-                const error = new Error(404);
-                error.isExpected = true;
-                assert.deepStrictEqual(err, error);
+                errors.NoSuchBucket.isExpected = true;
+                assert.deepStrictEqual(err, errors.NoSuchBucket);
                 return done();
             }
             done(new Error('Did not fail as expected'));

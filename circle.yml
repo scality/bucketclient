@@ -10,4 +10,3 @@ machine:
 test:
   override:
     - npm run --silent test
-    - npm run --silent ft_test

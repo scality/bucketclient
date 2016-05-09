@@ -3,10 +3,11 @@
 const errors = require('arsenal').errors;
 const assert = require('assert');
 const http = require('http');
+const querystring = require('querystring')
 const RESTClient = require('../../index.js').RESTClient;
-const existBucket = { 
+const existBucket = {
     name: 'Zaphod',
-    value: { status: 'alive' }, 
+    value: { status: 'alive' },
     raftInformation: {
             term: 1,
             cseq: 0,
@@ -132,5 +133,20 @@ describe('Unit tests with mockup server', function tests() {
             }
             done(new Error('Did not fail as expected'));
         });
+    });
+
+    it('expects that querystring.escape does not throw an error', done => {
+      if (querystring.escape('\uD800') && querystring.escape('\uD800')){
+        /* For a lone high or low surrogate querystring.escape does not throw
+        an error while encodeURIComponent throws an error
+        http://devdocs.io/javascript/global_objects/encodeuricomponent
+        */
+        // testing a lone high surrogate
+        assert.doesNotThrow(function(){querystring.escape('\uD800')})
+        // testing a lone low surrogate
+        assert.doesNotThrow(function(){querystring.escape('\uDFFF')})
+        return done();
+      }
+      done(new Error('Did not fail as expected'));
     });
 });

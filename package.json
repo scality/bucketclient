@@ -22,7 +22,7 @@
     "mocha": ""
   },
   "dependencies": {
-    "arsenal": "scality/IronMan-Arsenal",
+    "arsenal": "scality/Arsenal",
     "bunyan-logstash": "^0.3.4",
     "werelogs": "scality/werelogs"
   }

@@ -1,2 +1,2 @@
-# dbdclient
-IronMan DBD client
+# bucketclient
+Bucket-serving MetaData system client

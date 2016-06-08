@@ -1,6 +1,6 @@
 {
   "name": "bucketclient",
-  "version": "1.0.1-beta2",
+  "version": "1.0.0",
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
@@ -12,8 +12,8 @@
     "dbd",
     "raft"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Giorgio Regni",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/scality/bucketclient/issues"
   },

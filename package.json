@@ -7,6 +7,9 @@
     "ft_test": "mocha tests/functional",
     "test": "mocha tests/unit"
   },
+  "bin": {
+    "shell": "bin/shell.js"
+  },
   "repository": "scality/bucketclient",
   "keywords": [
     "dbd",

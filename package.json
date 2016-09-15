@@ -22,7 +22,7 @@
     "mocha": ""
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal",
-    "werelogs": "scality/werelogs"
+    "arsenal": "scality/Arsenal#rel/6.2",
+    "werelogs": "scality/werelogs#rel/6.2"
   }
 }

@@ -1,4 +1,5 @@
 'use strict'; // eslint-disable-line strict
+
 const assert = require('assert');
 const errors = require('arsenal').errors;
 
@@ -32,7 +33,7 @@ describe('Bucket Client tests', function testClient() {
                     assert.deepStrictEqual(err, errors.BucketAlreadyExists);
                     return done();
                 }
-                done('Did not fail as expected');
+                return done('Did not fail as expected');
             });
     });
     it('should get the created bucket', done => {
@@ -41,24 +42,22 @@ describe('Bucket Client tests', function testClient() {
             if (ret.status !== 'dead') {
                 return done(new Error('Did not fetch the data correctly'));
             }
-            done(err);
+            return done(err);
         });
     });
 
     it('should delete the created bucket', done => {
-        client.deleteBucket(bucketName, reqUids, (err) => {
-            done(err);
-        });
+        client.deleteBucket(bucketName, reqUids, err => done(err));
     });
 
     it('should fetch non-existing bucket, sending back an error', done => {
-        client.getBucketAttributes(bucketName, reqUids, (err) => {
+        client.getBucketAttributes(bucketName, reqUids, err => {
             if (err) {
                 errors.NoSuchBucket.isExpected = true;
                 assert.deepStrictEqual(err, errors.NoSuchBucket);
                 return done();
             }
-            done(new Error('Did not fail as expected'));
+            return done(new Error('Did not fail as expected'));
         });
     });
 });

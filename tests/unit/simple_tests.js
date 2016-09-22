@@ -1,4 +1,4 @@
-'use strict';
+'use strict'; // eslint-disable-line strict
 
 const errors = require('arsenal').errors;
 const assert = require('assert');
@@ -10,20 +10,22 @@ const existBucket = {
     name: 'Zaphod',
     value: { status: 'alive' },
     raftInformation: {
-            term: 1,
-            cseq: 0,
-            aseq: 5,
-            prune: 0,
-            ip: '127.0.0.1',
-            port: 4242
-    }
+        term: 1,
+        cseq: 0,
+        aseq: 5,
+        prune: 0,
+        ip: '127.0.0.1',
+        port: 4242,
+    },
 };
 const nonExistBucket = { name: 'Ford' };
 const reqUids = 'REQ1';
 
 function makeResponse(res, code, message) {
+    /* eslint-disable no-param-reassign */
     res.statusCode = code;
     res.statusMessage = message;
+    /* eslint-enable no-param-reassign */
 }
 
 const httpsOptions = {
@@ -35,16 +37,16 @@ const httpsOptions = {
 
 const env = {
     http: {
-        c: new RESTClient([ 'bucketclient.testing.local' ]),
-        s: (handler) => http.createServer(handler),
+        c: new RESTClient(['bucketclient.testing.local']),
+        s: handler => http.createServer(handler),
     },
     https: {
-        s: (handler) => https.createServer(httpsOptions, handler),
-        c: new RESTClient([ 'bucketclient.testing.local' ], undefined, true,
+        s: handler => https.createServer(httpsOptions, handler),
+        c: new RESTClient(['bucketclient.testing.local'], undefined, true,
                           httpsOptions.key,
                           httpsOptions.cert,
                           httpsOptions.ca[0]),
-    }
+    },
 };
 
 function handler(req, res) {
@@ -59,8 +61,8 @@ function handler(req, res) {
             makeResponse(res, 200, 'OK');
             res.write(JSON.stringify(existBucket.value));
         } else if (req.url === `/default/informations/${existBucket.name}`) {
-           makeResponse(res, 200, 'OK');
-           return res.end(JSON.stringify(existBucket.raftInformation));
+            makeResponse(res, 200, 'OK');
+            return res.end(JSON.stringify(existBucket.raftInformation));
         } else {
             makeResponse(res, 404, 'NoSuchBucket');
         }
@@ -71,7 +73,7 @@ function handler(req, res) {
             makeResponse(res, 404, 'NoSuchBucket');
         }
     }
-    res.end();
+    return res.end();
 }
 
 Object.keys(env).forEach(key => {
@@ -93,14 +95,14 @@ Object.keys(env).forEach(key => {
         });
 
         it('should try to create an already existing bucket and fail', done => {
-            client.createBucket(existBucket.name, reqUids, '{}', (err) => {
+            client.createBucket(existBucket.name, reqUids, '{}', err => {
                 if (err) {
                     const error = errors.BucketAlreadyExists;
                     error.isExpected = true;
                     assert.deepStrictEqual(err, error);
                     return done();
                 }
-                done('Did not fail as expected');
+                return done('Did not fail as expected');
             });
         });
 
@@ -124,7 +126,7 @@ Object.keys(env).forEach(key => {
 
         it('should get Raft informations on an unexisting bucket', done => {
             client.getRaftInformation(nonExistBucket.name, reqUids,
-                (err, data) => {
+                err => {
                     const error = errors.NoSuchBucket;
                     error.isExpected = true;
                     assert.deepStrictEqual(err, error);
@@ -133,14 +135,14 @@ Object.keys(env).forEach(key => {
         });
 
         it('should fetch non-existing bucket, sending back an error', done => {
-            client.getBucketAttributes(nonExistBucket.name, reqUids, (err) => {
+            client.getBucketAttributes(nonExistBucket.name, reqUids, err => {
                 if (err) {
                     const error = errors.NoSuchBucket;
                     error.isExpected = true;
                     assert.deepStrictEqual(err, error);
                     return done();
                 }
-                done(new Error('Did not fail as expected'));
+                return done(new Error('Did not fail as expected'));
             });
         });
 
@@ -156,7 +158,7 @@ Object.keys(env).forEach(key => {
                     assert.deepStrictEqual(err, error);
                     return done();
                 }
-                done(new Error('Did not fail as expected'));
+                return done(new Error('Did not fail as expected'));
             });
         });
     });

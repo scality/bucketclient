@@ -11,4 +11,5 @@ machine:
 
 test:
   override:
+    - npm run --silent lint --max-warnings 0
     - npm run --silent test

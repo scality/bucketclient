@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "ft_test": "mocha tests/functional",
+    "lint": "eslint $(git ls-files '*.js')",
     "test": "mocha tests/unit"
   },
   "repository": "scality/bucketclient",
@@ -19,7 +20,10 @@
   },
   "homepage": "https://github.com/scality/bucketclient#readme",
   "devDependencies": {
-    "mocha": ""
+    "mocha": "",
+    "eslint": "^2.4.0",
+    "eslint-config-airbnb": "^6.0.0",
+    "eslint-config-scality": "scality/Guidelines"
   },
   "dependencies": {
     "arsenal": "scality/Arsenal",

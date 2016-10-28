@@ -8,6 +8,9 @@
     "lint": "eslint $(git ls-files '*.js')",
     "test": "mocha tests/unit"
   },
+  "bin": {
+    "shell": "bin/shell.js"
+  },
   "repository": "scality/bucketclient",
   "keywords": [
     "dbd",
@@ -23,10 +26,10 @@
     "mocha": "",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines"
+    "eslint-config-scality": "scality/Guidelines#rel/6.2.1"
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal",
-    "werelogs": "scality/werelogs"
+    "arsenal": "scality/Arsenal#rel/6.2.1",
+    "werelogs": "scality/werelogs#rel/6.2.1"
   }
 }

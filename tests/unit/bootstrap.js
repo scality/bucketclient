@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const parse= require('../../lib/bootstraplist').parseBootstrapList;
+const parse = require('../../lib/bootstraplist').parseBootstrapList;
 
 describe('Bootstrap list tests', () => {
     const list = new Array(1024).fill(0)
@@ -11,7 +11,7 @@ describe('Bootstrap list tests', () => {
             assert.strictEqual(item.host, 'localhost');
             assert.strictEqual(item.port, index);
         });
-    })
+    });
 
     it('should give back the right port', () => {
         list.forEach((item, index) => {

@@ -63,6 +63,8 @@ function handler(req, res) {
         } else if (req.url === `/default/informations/${existBucket.name}`) {
             makeResponse(res, 200, 'OK');
             return res.end(JSON.stringify(existBucket.raftInformation));
+        } else if (req.url === '/_/healthcheck') {
+            makeResponse(res, 200, 'OK');
         } else {
             makeResponse(res, 404, 'NoSuchBucket');
         }
@@ -159,6 +161,14 @@ Object.keys(env).forEach(key => {
                     return done();
                 }
                 return done(new Error('Did not fail as expected'));
+            });
+        });
+
+        it('should return 200 on healthcheck request', done => {
+            const log = e.c.createLogger();
+            client.healthcheck(log, err => {
+                assert.deepStrictEqual(err, null);
+                return done();
             });
         });
     });

@@ -23,10 +23,10 @@
     "mocha": "",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines"
+    "eslint-config-scality": "scality/Guidelines#rel/6.4"
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal",
-    "werelogs": "scality/werelogs"
+    "arsenal": "scality/Arsenal#rel/6.4",
+    "werelogs": "scality/werelogs#rel/6.4"
   }
 }

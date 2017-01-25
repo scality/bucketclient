@@ -20,13 +20,15 @@
   },
   "homepage": "https://github.com/scality/bucketclient#readme",
   "devDependencies": {
-    "mocha": "",
-    "eslint": "^2.4.0",
-    "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines"
+    "mocha": "3.1.2",
+    "babel-eslint": "6.1.2",
+    "eslint": "2.13.1",
+    "eslint-config-airbnb": "6.2.0",
+    "eslint-plugin-react": "4.3.0",
+    "eslint-config-scality": "scality/Guidelines#ft/node-v6"
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal",
-    "werelogs": "scality/werelogs"
+    "arsenal": "scality/Arsenal#ft/node-v6",
+    "werelogs": "scality/werelogs#ft/node-v6"
   }
 }

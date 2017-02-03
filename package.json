@@ -1,6 +1,9 @@
 {
   "name": "bucketclient",
-  "version": "1.1.0",
+  "engines": {
+    "node": "6.9.5"
+  },
+  "version": "7.0.0",
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
@@ -26,7 +29,8 @@
     "mocha": "",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines"
+    "eslint-config-scality": "scality/Guidelines",
+    "eslint-plugin-react": "4.2.3"
   },
   "dependencies": {
     "arsenal": "scality/Arsenal",

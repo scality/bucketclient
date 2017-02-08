@@ -8,6 +8,9 @@
     "lint": "eslint $(git ls-files '*.js')",
     "test": "mocha tests/unit"
   },
+  "bin": {
+    "shell": "bin/shell.js"
+  },
   "repository": "scality/bucketclient",
   "keywords": [
     "dbd",

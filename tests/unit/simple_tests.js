@@ -1,11 +1,14 @@
 'use strict'; // eslint-disable-line strict
 
-const errors = require('arsenal').errors;
 const assert = require('assert');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
+
+const errors = require('arsenal').errors;
+
 const RESTClient = require('../../index.js').RESTClient;
+
 const existBucket = {
     name: 'Zaphod',
     value: { status: 'alive' },
@@ -37,12 +40,14 @@ const httpsOptions = {
 
 const env = {
     http: {
-        c: new RESTClient(['bucketclient.testing.local']),
+        c: new RESTClient(['bucketclient.testing.local:9000']),
         s: handler => http.createServer(handler),
     },
     https: {
         s: handler => https.createServer(httpsOptions, handler),
-        c: new RESTClient(['bucketclient.testing.local'], undefined, true,
+        c: new RESTClient(['bucketclient.testing.local:9000'],
+                          undefined,
+                          true,
                           httpsOptions.key,
                           httpsOptions.cert,
                           httpsOptions.ca[0]),

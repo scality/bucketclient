@@ -60,4 +60,50 @@ describe('Bucket Client tests', function testClient() {
             return done(new Error('Did not fail as expected'));
         });
     });
+
+    it('get all raftSessions', done => {
+        client.getAllRafts(null, (err, msg) => {
+            if (err) {
+                return done(err);
+            }
+            const rafts = JSON.parse(msg);
+            assert.strictEqual(Array.isArray(rafts), true);
+            assert.strictEqual(rafts.length >= 1, true);
+            assert.strictEqual(rafts.every(raft =>
+                typeof raft.id === 'number' &&
+                Array.isArray(raft.raftMembers)
+            ), true);
+            return done();
+        });
+    });
+
+
+    it('should get logs from bucketd', done => {
+        const start = 1;
+        const end = 10;
+        client.getRaftLog(0, 1, 10, true, null, (err, data) => {
+            if (err) {
+                return done(err);
+            }
+            const obj = JSON.parse(data);
+            assert.strictEqual(obj.hasOwnProperty('info'), true);
+            const info = obj.info;
+            assert.strictEqual(['start', 'end', 'cseq', 'prune']
+                .every(key => obj.info.hasOwnProperty(key)), true);
+            assert.strictEqual(info.start >= start, true);
+            assert.strictEqual(info.end <= end, true);
+            // NOTE: this check will be removed when pruned logs are
+            // retrieved also
+            assert.strictEqual(info.prune <= info.start, true);
+            assert.strictEqual(info.cseq >= info.end, true);
+            assert.strictEqual(obj.hasOwnProperty('log'), true);
+            const logs = obj.log;
+            assert.strictEqual(Array.isArray(logs), true);
+            assert.strictEqual(logs.length >= 1, true);
+            assert.strictEqual(logs.every(log =>
+                (typeof log === 'object') && (Object.keys(log).length > 0)
+            ), true);
+            return done();
+        });
+    });
 });

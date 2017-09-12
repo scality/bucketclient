@@ -86,17 +86,20 @@ describe('Bucket Client tests', function testClient() {
                 return done(err);
             }
             const obj = JSON.parse(data);
-            assert.strictEqual(obj.hasOwnProperty('info'), true);
+            assert.strictEqual(Object.prototype.hasOwnProperty.call(
+                obj, 'info'), true);
             const info = obj.info;
             assert.strictEqual(['start', 'end', 'cseq', 'prune']
-                .every(key => obj.info.hasOwnProperty(key)), true);
+                .every(key => Object.prototype.hasOwnProperty.call(
+                    obj.info, key)), true);
             assert.strictEqual(info.start >= start, true);
             assert.strictEqual(info.end <= end, true);
             // NOTE: this check will be removed when pruned logs are
             // retrieved also
             assert.strictEqual(info.prune <= info.start, true);
             assert.strictEqual(info.cseq >= info.end, true);
-            assert.strictEqual(obj.hasOwnProperty('log'), true);
+            assert.strictEqual(Object.prototype.hasOwnProperty.call(
+                obj, 'log'), true);
             const logs = obj.log;
             assert.strictEqual(Array.isArray(logs), true);
             assert.strictEqual(logs.length >= 1, true);

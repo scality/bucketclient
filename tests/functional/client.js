@@ -81,32 +81,42 @@ describe('Bucket Client tests', function testClient() {
     it('should get logs from bucketd', done => {
         const start = 1;
         const end = 10;
-        client.getRaftLog(0, 1, 10, true, null, (err, data) => {
+        client.getRaftLog(0, 1, 10, true, null, (err, stream) => {
             if (err) {
                 return done(err);
             }
-            const obj = JSON.parse(data);
-            assert.strictEqual(Object.prototype.hasOwnProperty.call(
-                obj, 'info'), true);
-            const info = obj.info;
-            assert.strictEqual(['start', 'end', 'cseq', 'prune']
-                .every(key => Object.prototype.hasOwnProperty.call(
-                    obj.info, key)), true);
-            assert.strictEqual(info.start >= start, true);
-            assert.strictEqual(info.end <= end, true);
-            // NOTE: this check will be removed when pruned logs are
-            // retrieved also
-            assert.strictEqual(info.prune <= info.start, true);
-            assert.strictEqual(info.cseq >= info.end, true);
-            assert.strictEqual(Object.prototype.hasOwnProperty.call(
-                obj, 'log'), true);
-            const logs = obj.log;
-            assert.strictEqual(Array.isArray(logs), true);
-            assert.strictEqual(logs.length >= 1, true);
-            assert.strictEqual(logs.every(log =>
-                (typeof log === 'object') && (Object.keys(log).length > 0)
-            ), true);
-            return done();
+            const dataBufs = [];
+            let dataLen = 0;
+            stream.on('data', data => {
+                dataBufs.push(data);
+                dataLen += data.length;
+            }).on('error', done)
+              .on('end', () => {
+                  const data = Buffer.concat(dataBufs, dataLen).toString();
+                  const obj = JSON.parse(data);
+                  assert.strictEqual(Object.prototype.hasOwnProperty.call(
+                      obj, 'info'), true);
+                  const info = obj.info;
+                  assert.strictEqual(['start', 'end', 'cseq', 'prune']
+                      .every(key => Object.prototype.hasOwnProperty.call(
+                          obj.info, key)), true);
+                  assert.strictEqual(info.start >= start, true);
+                  assert.strictEqual(info.end <= end, true);
+                  // NOTE: this check will be removed when pruned logs are
+                  // retrieved also
+                  assert.strictEqual(info.prune <= info.start, true);
+                  assert.strictEqual(info.cseq >= info.end, true);
+                  assert.strictEqual(Object.prototype.hasOwnProperty.call(
+                      obj, 'log'), true);
+                  const logs = obj.log;
+                  assert.strictEqual(Array.isArray(logs), true);
+                  assert.strictEqual(logs.length >= 1, true);
+                  assert.strictEqual(logs.every(log =>
+                      (typeof log === 'object') && (Object.keys(log).length > 0)
+                  ), true);
+                  return done();
+              });
+            return undefined;
         });
     });
 });

@@ -60,6 +60,8 @@ function handler(req, res) {
             makeResponse(res, 409, 'BucketAlreadyExists');
         } else if (req.url === `/default/bucket/${nonExistBucket.name}`) {
             makeResponse(res, 200, 'OK');
+        } else if (req.url === '/_/livecheck') {
+            makeResponse(res, 200, 'OK');
         }
     } else if (req.method === 'GET') {
         if (req.url === `/default/attributes/${existBucket.name}`) {
@@ -172,6 +174,14 @@ Object.keys(env).forEach(key => {
         it('should return 200 on healthcheck request', done => {
             const log = e.c.createLogger();
             client.healthcheck(log, err => {
+                assert.deepStrictEqual(err, null);
+                return done();
+            });
+        });
+
+        it('should return 200 on livecheck request', done => {
+            const log = e.c.createLogger();
+            client.livecheck(log, err => {
                 assert.deepStrictEqual(err, null);
                 return done();
             });

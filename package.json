@@ -3,7 +3,7 @@
   "engines": {
     "node": ">=6.9.5"
   },
-  "version": "7.2.0",
+  "version": "7.4.0-beta",
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
@@ -29,11 +29,11 @@
     "mocha": "",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines#rel/7.4",
+    "eslint-config-scality": "scality/Guidelines#rel/7.4-beta",
     "eslint-plugin-react": "4.2.3"
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal#rel/7.4",
-    "werelogs": "scality/werelogs#rel/7.4"
+    "arsenal": "scality/Arsenal#rel/7.4-beta",
+    "werelogs": "scality/werelogs#rel/7.4-beta"
   }
 }

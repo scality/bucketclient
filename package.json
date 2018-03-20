@@ -33,7 +33,7 @@
     "eslint-plugin-react": "4.2.3"
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal",
+    "arsenal": "scality/Arsenal#fwd/7.4-beta-master",
     "werelogs": "scality/werelogs"
   }
 }

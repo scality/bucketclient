@@ -119,4 +119,15 @@ describe('Bucket Client tests', function testClient() {
             return undefined;
         });
     });
+
+    it('should get list of buckets from specified raft session', done => {
+        client.getRaftBuckets(1, null, (err, msg) => {
+            if (err) {
+                return done(err);
+            }
+            const bucketList = JSON.parse(msg);
+            assert.strictEqual(typeof bucketList, typeof []);
+            return done();
+        });
+    });
 });

@@ -3,7 +3,7 @@
   "engines": {
     "node": ">=6.9.5"
   },
-  "version": "7.4.0",
+  "version": "1.0.0-zenko",
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "dbd",
     "raft"
   ],
-  "author": "Giorgio Regni",
+  "author": "Scality Inc.",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/scality/bucketclient/issues"

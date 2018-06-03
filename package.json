@@ -1,39 +1,39 @@
 {
-  "name": "bucketclient",
-  "engines": {
-    "node": ">=6.9.5"
-  },
-  "version": "7.2.0",
-  "description": "Bucket Client",
-  "main": "index.js",
-  "scripts": {
-    "ft_test": "mocha tests/functional",
-    "lint": "eslint $(git ls-files '*.js')",
-    "test": "mocha tests/unit"
-  },
-  "bin": {
-    "shell": "bin/shell.js"
-  },
-  "repository": "scality/bucketclient",
-  "keywords": [
-    "dbd",
-    "raft"
-  ],
-  "author": "Giorgio Regni",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/scality/bucketclient/issues"
-  },
-  "homepage": "https://github.com/scality/bucketclient#readme",
-  "devDependencies": {
-    "mocha": "",
-    "eslint": "^2.4.0",
-    "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines#rel/7.4",
-    "eslint-plugin-react": "4.2.3"
-  },
-  "dependencies": {
-    "arsenal": "scality/Arsenal#rel/7.4",
-    "werelogs": "scality/werelogs#rel/7.4"
-  }
+    "name": "bucketclient",
+    "engines": {
+        "node": ">=6.9.5"
+    },
+    "version": "7.4.0.1",
+    "description": "Bucket Client",
+    "main": "index.js",
+    "scripts": {
+        "ft_test": "mocha tests/functional",
+        "lint": "eslint $(git ls-files '*.js')",
+        "test": "mocha tests/unit"
+    },
+    "bin": {
+        "shell": "bin/shell.js"
+    },
+    "repository": "scality/bucketclient",
+    "keywords": [
+        "dbd",
+        "raft"
+    ],
+    "author": "Giorgio Regni",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/scality/bucketclient/issues"
+    },
+    "homepage": "https://github.com/scality/bucketclient#readme",
+    "devDependencies": {
+        "mocha": "",
+        "eslint": "^2.4.0",
+        "eslint-config-airbnb": "^6.0.0",
+        "eslint-config-scality": "scality/Guidelines#hotfix/7.4.0",
+        "eslint-plugin-react": "4.2.3"
+    },
+    "dependencies": {
+        "arsenal": "scality/Arsenal#hotfix/7.4.0",
+        "werelogs": "scality/werelogs#hotfix/7.4.0"
+    }
 }

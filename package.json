@@ -29,11 +29,11 @@
     "mocha": "",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines#rel/7.4",
+    "eslint-config-scality": "scality/Guidelines#7.4.0.3",
     "eslint-plugin-react": "4.2.3"
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal#rel/7.4",
-    "werelogs": "scality/werelogs#rel/7.4"
+    "arsenal": "scality/Arsenal#7.4.0.3",
+    "werelogs": "scality/werelogs#7.4.0.3"
   }
 }

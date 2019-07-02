@@ -1,7 +1,7 @@
 {
   "name": "bucketclient",
   "engines": {
-    "node": ">=6.9.5"
+    "node": ">=10.16.0"
   },
   "version": "8.1.0",
   "description": "Bucket Client",
@@ -33,7 +33,7 @@
     "eslint-plugin-react": "4.2.3"
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal#4e522a4",
-    "werelogs": "scality/werelogs#74b121b"
+    "arsenal": "scality/Arsenal#c57cde8",
+    "werelogs": "scality/werelogs#351a2a3"
   }
 }

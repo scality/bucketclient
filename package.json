@@ -9,7 +9,9 @@
   "scripts": {
     "ft_test": "mocha tests/functional",
     "lint": "eslint $(git ls-files '*.js')",
-    "test": "mocha tests/unit"
+    "test": "mocha tests/unit",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "bin": {
     "shell": "bin/shell.js"
@@ -34,6 +36,8 @@
   },
   "dependencies": {
     "arsenal": "scality/Arsenal#67365083",
-    "werelogs": "scality/werelogs#0ff7ec82"
-  }
+    "werelogs": "scality/werelogs#0ff7ec82",
+    "snyk": "^1.190.0"
+  },
+  "snyk": true
 }

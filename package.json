@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "arsenal": "scality/Arsenal#c57cde8",
-    "werelogs": "scality/werelogs#351a2a3",
-    "yarn": "^1.17.3"
+    "werelogs": "scality/werelogs#351a2a3"
   }
 }

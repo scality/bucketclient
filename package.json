@@ -29,7 +29,7 @@
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
     "eslint-config-scality": "scality/Guidelines#71a059ad",
-    "eslint-plugin-react": "4.2.3",
+    "eslint-plugin-react": "4.3.0",
     "mocha": ""
   },
   "dependencies": {

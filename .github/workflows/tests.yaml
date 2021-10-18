@@ -20,8 +20,6 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: install dependencies
         run: yarn install --frozen-lockfile
-      - name: run lint
-        run: yarn run --silent lint -- --max-warnings 0
       - name: set host bucketclient.testing.local
         run: sudo bash -c 'echo "127.0.0.1 bucketclient.testing.local" >> /etc/hosts'
       - name: run test

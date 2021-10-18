@@ -1,13 +1,14 @@
-'use strict'; // eslint-disable-line strict
+
+// eslint-disable-line strict
 
 const assert = require('assert');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
-const errors = require('arsenal').errors;
+const { errors } = require('arsenal');
 
-const RESTClient = require('../../index.js').RESTClient;
+const { RESTClient } = require('../../index.js');
 
 const existBucket = {
     name: 'Zaphod',
@@ -38,19 +39,21 @@ const httpsOptions = {
     requestCert: true,
 };
 
+const REST_CLIENT_SERVERNAME = '127.0.0.1';
+
 const env = {
     http: {
-        c: new RESTClient(['bucketclient.testing.local:9000']),
+        c: new RESTClient([`${REST_CLIENT_SERVERNAME}:9000`]),
         s: handler => http.createServer(handler),
     },
     https: {
         s: handler => https.createServer(httpsOptions, handler),
-        c: new RESTClient(['bucketclient.testing.local:9000'],
-                          undefined,
-                          true,
-                          httpsOptions.key,
-                          httpsOptions.cert,
-                          httpsOptions.ca[0]),
+        c: new RESTClient([`${REST_CLIENT_SERVERNAME}:9000`],
+            undefined,
+            true,
+            httpsOptions.key,
+            httpsOptions.cert,
+            httpsOptions.ca[0]),
     },
 };
 
@@ -100,7 +103,7 @@ Object.keys(env).forEach(key => {
 
         it('should create a new non-existing bucket', done => {
             client.createBucket(nonExistBucket.name, reqUids,
-                                '{ status: "dead" }', done);
+                '{ status: "dead" }', done);
         });
 
         it('should try to create an already existing bucket and fail', done => {

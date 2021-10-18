@@ -39,7 +39,7 @@ const httpsOptions = {
     requestCert: true,
 };
 
-const REST_CLIENT_SERVERNAME = '127.0.0.1';
+const REST_CLIENT_SERVERNAME = 'bucketclient.testing.local';
 
 const env = {
     http: {

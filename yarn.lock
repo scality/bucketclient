@@ -275,8 +275,6 @@ arsenal@scality/Arsenal#918a1d7:
     uuid "^3.0.1"
     werelogs scality/werelogs#0ff7ec82
     xml2js "~0.4.23"
-  optionalDependencies:
-    ioctl "2.0.0"
 
 astral-regex@^2.0.0:
   version "2.0.0"
@@ -1221,14 +1219,6 @@ internal-slot@^1.0.3:
     get-intrinsic "^1.1.0"
     has "^1.0.3"
     side-channel "^1.0.4"
-
-ioctl@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ioctl/-/ioctl-2.0.0.tgz#2aacbd73eb6ff9ad01fdf3ecc3390ee57781100e"
-  integrity sha1-Kqy9c+tv+a0B/fPswzkO5XeBEA4=
-  dependencies:
-    bindings "^1.1.1"
-    nan "^2.3.2"
 
 ioredis@4.9.5:
   version "4.9.5"

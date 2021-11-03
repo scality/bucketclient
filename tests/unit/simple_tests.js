@@ -1,6 +1,3 @@
-
-// eslint-disable-line strict
-
 const assert = require('assert');
 const fs = require('fs');
 const http = require('http');

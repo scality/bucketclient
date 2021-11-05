@@ -1,1 +1,3 @@
-{ "extends": "scality" }
+{ 
+  "extends": ["scality", "prettier"]
+}

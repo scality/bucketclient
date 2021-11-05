@@ -1,13 +1,11 @@
-'use strict'; // eslint-disable-line strict
-
 const assert = require('assert');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
-const errors = require('arsenal').errors;
+const { errors } = require('arsenal');
 
-const RESTClient = require('../../index.js').RESTClient;
+const { RESTClient } = require('../../index');
 
 const existBucket = {
     name: 'Zaphod',
@@ -34,27 +32,27 @@ function makeResponse(res, code, message) {
 const httpsOptions = {
     key: fs.readFileSync('./tests/utils/test.key', 'ascii'),
     cert: fs.readFileSync('./tests/utils/test.crt', 'ascii'),
-    ca: [fs.readFileSync('./tests/utils/ca.crt', 'ascii')],
     requestCert: true,
 };
 
+const REST_CLIENT_SERVERNAME = 'bucketclient.testing.local';
+
 const env = {
     http: {
-        c: new RESTClient(['bucketclient.testing.local:9000']),
+        c: new RESTClient([`${REST_CLIENT_SERVERNAME}:9000`]),
         s: handler => http.createServer(handler),
     },
     https: {
         s: handler => https.createServer(httpsOptions, handler),
-        c: new RESTClient(['bucketclient.testing.local:9000'],
-                          undefined,
-                          true,
-                          httpsOptions.key,
-                          httpsOptions.cert,
-                          httpsOptions.ca[0]),
+        c: new RESTClient([`${REST_CLIENT_SERVERNAME}:9000`],
+            undefined,
+            true,
+            httpsOptions.key,
+            httpsOptions.cert),
     },
 };
 
-function handler(req, res) {
+function serverHandler(req, res) {
     if (req.method === 'POST') {
         if (req.url === `/default/bucket/${existBucket.name}`) {
             makeResponse(res, 409, 'BucketAlreadyExists');
@@ -92,7 +90,7 @@ Object.keys(env).forEach(key => {
         let client;
 
         beforeEach('start server', done => {
-            server = e.s(handler).listen(9000, done).on('error', done);
+            server = e.s(serverHandler).listen(9000, done).on('error', done);
             client = e.c;
         });
 
@@ -100,7 +98,11 @@ Object.keys(env).forEach(key => {
 
         it('should create a new non-existing bucket', done => {
             client.createBucket(nonExistBucket.name, reqUids,
-                                '{ status: "dead" }', done);
+                '{ status: "dead" }', () => {
+
+done();
+                  
+                });
         });
 
         it('should try to create an already existing bucket and fail', done => {

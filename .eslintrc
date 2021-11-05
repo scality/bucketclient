@@ -1,6 +1,3 @@
 { 
-  "extends": "scality",
-  "rules": {
-    "prettier/prettier": 0,
-  },
+  "extends": ["scality", "prettier"]
 }

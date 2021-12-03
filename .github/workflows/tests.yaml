@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
+      - name: Update yarn
+        run: corepack enable && yarn set version stable
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'

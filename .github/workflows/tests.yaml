@@ -21,7 +21,7 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: run lint
         run: yarn run --silent lint -- --max-warnings 0
       - name: set host bucketclient.testing.local

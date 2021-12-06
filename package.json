@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",
-    "arsenal": "scality/Arsenal#918a1d7c899a7ecddcd1d6e7bbdd49b5becc5bd0",
+    "arsenal": "scality/Arsenal#7.4.9.4",
     "werelogs": "scality/werelogs#8.1.0"
   }
 }

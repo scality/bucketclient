@@ -3557,7 +3557,7 @@ __metadata:
 
 "werelogs@scality/werelogs#0ff7ec82, werelogs@scality/werelogs#8.1.0":
   version: 8.1.0
-  resolution: "werelogs@git+ssh://git@github.com/scality/werelogs.git#commit=e8f828725642c54c511cdbe580b18f43d3589313"
+  resolution: "werelogs@https://github.com/scality/werelogs.git#commit=e8f828725642c54c511cdbe580b18f43d3589313"
   dependencies:
     safe-json-stringify: 1.0.3
   checksum: a1e440cde56be4a35d474ebd4726e34548bfb5a09b2f675b5af18ff53747411864dd9b860707508a6290f5fcc92074f4aa57261c57d5fdb959f32eefa9595502

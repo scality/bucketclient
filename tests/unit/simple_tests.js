@@ -7,7 +7,7 @@ const https = require('https');
 
 const errors = require('arsenal').errors;
 
-const RESTClient = require('../../index.js').RESTClient;
+const RESTClient = require('../../index').RESTClient;
 
 const existBucket = {
     name: 'Zaphod',
@@ -92,15 +92,18 @@ Object.keys(env).forEach(key => {
         let client;
 
         beforeEach('start server', done => {
-            server = e.s(handler).listen(9000, done).on('error', done);
             client = e.c;
+            server = e.s(handler).on('error', done).listen(9000, done);
         });
 
-        afterEach('stop server', () => { server.close(); });
+        afterEach('stop server', done => {
+            client.agent.destroy();
+            server.close(done);
+        });
 
         it('should create a new non-existing bucket', done => {
             client.createBucket(nonExistBucket.name, reqUids,
-                                '{ status: "dead" }', done);
+                '{ status: "dead" }', done);
         });
 
         it('should try to create an already existing bucket and fail', done => {

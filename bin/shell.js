@@ -6,4 +6,4 @@ logs.configure({
     dump: 'error',
 });
 
-require('../lib/shell.js')();
+require('../lib/shell')();

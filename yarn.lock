@@ -293,9 +293,9 @@ arraybuffer.slice@~0.0.7:
   resolved "https://registry.yarnpkg.com/arraybuffer.slice/-/arraybuffer.slice-0.0.7.tgz#3bbc4275dd584cc1b10809b89d4e8b63a69e7675"
   integrity sha512-wGUIVQXuehL5TCqQun8OW81jGzAWycqzFF8lFp+GOM5BXLYj3bKNsYC4daB7n6XjCqxQA/qgTJ+8ANR3acjrog==
 
-arsenal@scality/Arsenal#w/8.1/feature/ARSN-21/UpgradeToNode16:
-  version "8.1.22"
-  resolved "https://codeload.github.com/scality/Arsenal/tar.gz/f5b0f1e08294232369efe937e80867c6a41acdf4"
+arsenal@scality/Arsenal#8.1.27:
+  version "8.1.27"
+  resolved "https://codeload.github.com/scality/Arsenal/tar.gz/3c9ab1bb99c2b3134882e7d8ad12573a073188f4"
   dependencies:
     "@hapi/joi" "^15.1.0"
     JSONStream "^1.0.0"
@@ -311,7 +311,7 @@ arsenal@scality/Arsenal#w/8.1/feature/ARSN-21/UpgradeToNode16:
     debug "~4.1.0"
     diskusage "^1.1.1"
     fcntl "github:scality/node-fcntl#0.2.0"
-    hdclient scality/hdclient#489db2106570b9ea41bdacdf56131324d0db6a58
+    hdclient scality/hdclient#1.1.0
     https-proxy-agent "^2.2.0"
     ioredis "4.9.5"
     ipaddr.js "1.9.1"
@@ -323,7 +323,7 @@ arsenal@scality/Arsenal#w/8.1/feature/ARSN-21/UpgradeToNode16:
     simple-glob "^0.2.0"
     socket.io "~2.3.0"
     socket.io-client "~2.3.0"
-    sproxydclient "github:scality/sproxydclient#8.0.2"
+    sproxydclient "github:scality/sproxydclient#8.0.3"
     utf8 "3.0.0"
     uuid "^3.0.1"
     werelogs scality/werelogs#8.1.0
@@ -348,10 +348,10 @@ async-limiter@~1.0.0:
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
-async@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/async/-/async-3.2.0.tgz#b3a2685c5ebb641d3de02d161002c60fc9f85720"
-  integrity sha512-TR2mEZFVOj2pLStYxLht7TyfuRzaydfpxr3k9RpHIzMgw7A64dzsdqCxH1WJyQdoe8T10nDXd9wnEigmiuHIZw==
+async@^3.2.0:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/async/-/async-3.2.3.tgz#ac53dafd3f4720ee9e8a160628f18ea91df196c9"
+  integrity sha512-spZRyzKL5l5BZQrr/6m/SqFdBN0q3OCI0f9rjfBzCMBIP4p75P620rR3gTmaksNOhmzgdxcaxdNfMy6anrbM0g==
 
 async@~2.6.1:
   version "2.6.3"
@@ -1136,9 +1136,9 @@ eslint-config-airbnb@^6.0.0:
   resolved "https://registry.yarnpkg.com/eslint-config-airbnb/-/eslint-config-airbnb-6.2.0.tgz#4a28196aa4617de01b8c914e992a82e5d0886a6e"
   integrity sha1-SigZaqRhfeAbjJFOmSqC5dCIam4=
 
-eslint-config-scality@scality/Guidelines#71a059ad:
+eslint-config-scality@scality/Guidelines#ec33dfb:
   version "1.1.0"
-  resolved "https://codeload.github.com/scality/Guidelines/tar.gz/71a059ad3fa0598d5bbb923badda58ccf06cc8a6"
+  resolved "https://codeload.github.com/scality/Guidelines/tar.gz/ec33dfba6137749574f80dde6193b307536a86cc"
   dependencies:
     commander "1.3.2"
     markdownlint "0.0.8"
@@ -1504,9 +1504,9 @@ hash-base@^3.0.0:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-hdclient@scality/hdclient#489db2106570b9ea41bdacdf56131324d0db6a58:
-  version "0.1.0"
-  resolved "https://codeload.github.com/scality/hdclient/tar.gz/489db2106570b9ea41bdacdf56131324d0db6a58"
+hdclient@scality/hdclient#1.1.0:
+  version "1.1.0"
+  resolved "https://codeload.github.com/scality/hdclient/tar.gz/dd6d952e39ca89133019bafbb33eef6c418689f8"
   dependencies:
     werelogs scality/werelogs#GA7.2.0.5
 
@@ -3028,11 +3028,11 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
-"sproxydclient@github:scality/sproxydclient#8.0.2":
-  version "8.0.2"
-  resolved "https://codeload.github.com/scality/sproxydclient/tar.gz/e45c547833f03b1fa0409e0499433dcb386442f5"
+"sproxydclient@github:scality/sproxydclient#8.0.3":
+  version "8.0.3"
+  resolved "https://codeload.github.com/scality/sproxydclient/tar.gz/1377ae00e2fd6fff322bc604648abe8971f8a800"
   dependencies:
-    async "^3.1.0"
+    async "^3.2.0"
     werelogs scality/werelogs#8.1.0
 
 sshpk@^1.7.0:

@@ -28,7 +28,7 @@
   "devDependencies": {
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines#8.2.0",
+    "eslint-config-scality": "scality/Guidelines#ec33dfb",
     "eslint-plugin-react": "4.2.3",
     "mocha": ""
   },

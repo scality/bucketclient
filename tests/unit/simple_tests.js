@@ -20,6 +20,16 @@ const existBucket = {
         ip: '127.0.0.1',
         port: 4242,
     },
+    bucketInformation: {
+        raftSessionId: 3,
+        creating: false,
+        deleting: false,
+        version: 0,
+        leader: {
+            host: '127.0.0.4',
+            port: 4500,
+        },
+    },
 };
 const nonExistBucket = { name: 'Ford' };
 const reqUids = 'REQ1';
@@ -70,6 +80,9 @@ function handler(req, res) {
         } else if (req.url === `/default/informations/${existBucket.name}`) {
             makeResponse(res, 200, 'OK');
             return res.end(JSON.stringify(existBucket.raftInformation));
+        } else if (req.url === `/_/buckets/${existBucket.name}`) {
+            makeResponse(res, 200, 'OK');
+            return res.end(JSON.stringify(existBucket.bucketInformation));
         } else if (req.url === '/_/healthcheck') {
             makeResponse(res, 200, 'OK');
         } else {
@@ -137,6 +150,25 @@ Object.keys(env).forEach(key => {
         });
 
         it('should get Raft informations on an unexisting bucket', done => {
+            client.getRaftInformation(nonExistBucket.name, reqUids,
+                err => {
+                    const error = errors.NoSuchBucket;
+                    error.isExpected = true;
+                    assert.deepStrictEqual(err, error);
+                    return done();
+                });
+        });
+
+        it('should get Bucket informations on an existing bucket', done => {
+            client.getBucketInformation(existBucket.name, reqUids,
+                (err, data) => {
+                    const ret = JSON.parse(data);
+                    assert.deepStrictEqual(ret, existBucket.bucketInformation);
+                    done(err);
+                });
+        });
+
+        it('should get Bucket informations on an unexisting bucket', done => {
             client.getRaftInformation(nonExistBucket.name, reqUids,
                 err => {
                     const error = errors.NoSuchBucket;

@@ -33,8 +33,8 @@
     "mocha": ""
   },
   "dependencies": {
-    "arsenal": "scality/Arsenal#8.1.39",
     "agentkeepalive": "^4.1.4",
+    "arsenal": "git+https://github.com/scality/Arsenal#8.1.48",
     "werelogs": "scality/werelogs#8.1.0"
   }
 }

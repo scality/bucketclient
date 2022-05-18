@@ -5,8 +5,6 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
-const errors = require('arsenal').errors;
-
 const RESTClient = require('../../index').RESTClient;
 
 const existBucket = {
@@ -122,9 +120,8 @@ Object.keys(env).forEach(key => {
         it('should try to create an already existing bucket and fail', done => {
             client.createBucket(existBucket.name, reqUids, '{}', err => {
                 if (err) {
-                    const error = errors.BucketAlreadyExists;
-                    error.isExpected = true;
-                    assert.deepStrictEqual(err, error);
+                    assert(err.is.BucketAlreadyExists);
+                    assert.strictEqual(err.isExpected, true);
                     return done();
                 }
                 return done('Did not fail as expected');
@@ -152,9 +149,9 @@ Object.keys(env).forEach(key => {
         it('should get Raft informations on an unexisting bucket', done => {
             client.getRaftInformation(nonExistBucket.name, reqUids,
                 err => {
-                    const error = errors.NoSuchBucket;
-                    error.isExpected = true;
-                    assert.deepStrictEqual(err, error);
+                    assert(err.is.NoSuchBucket);
+                    assert.strictEqual(err.isExpected, true);
+
                     return done();
                 });
         });
@@ -171,9 +168,9 @@ Object.keys(env).forEach(key => {
         it('should get Bucket informations on an unexisting bucket', done => {
             client.getRaftInformation(nonExistBucket.name, reqUids,
                 err => {
-                    const error = errors.NoSuchBucket;
-                    error.isExpected = true;
-                    assert.deepStrictEqual(err, error);
+                    assert(err.is.NoSuchBucket);
+                    assert.strictEqual(err.isExpected, true);
+
                     return done();
                 });
         });
@@ -181,9 +178,9 @@ Object.keys(env).forEach(key => {
         it('should fetch non-existing bucket, sending back an error', done => {
             client.getBucketAttributes(nonExistBucket.name, reqUids, err => {
                 if (err) {
-                    const error = errors.NoSuchBucket;
-                    error.isExpected = true;
-                    assert.deepStrictEqual(err, error);
+                    assert(err.is.NoSuchBucket);
+                    assert.strictEqual(err.isExpected, true);
+
                     return done();
                 }
                 return done(new Error('Did not fail as expected'));
@@ -197,9 +194,9 @@ Object.keys(env).forEach(key => {
         it('should fetch non-existing bucket, sending back an error', done => {
             client.deleteBucket(nonExistBucket.name, reqUids, err => {
                 if (err) {
-                    const error = errors.NoSuchBucket;
-                    error.isExpected = true;
-                    assert.deepStrictEqual(err, error);
+                    assert(err.is.NoSuchBucket);
+                    assert.strictEqual(err.isExpected, true);
+
                     return done();
                 }
                 return done(new Error('Did not fail as expected'));

@@ -3,7 +3,7 @@
   "engines": {
     "node": ">=16"
   },
-  "version": "8.1.4",
+  "version": "8.1.5",
   "description": "Bucket Client",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",
-    "arsenal": "git+https://github.com/scality/Arsenal#8.1.48",
+    "arsenal": "git+https://github.com/scality/Arsenal#8.1.62",
     "werelogs": "scality/werelogs#8.1.0"
   }
 }

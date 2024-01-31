@@ -1,5 +1,11 @@
 declare function Callback(error: Error, res?: any): void;
 
+declare type BatchOperation = {
+    type?: string,
+    key: string,
+    value?: string,
+};
+
 declare module 'bucketclient' {
     export class RESTClient {
         constructor(
@@ -27,6 +33,7 @@ declare module 'bucketclient' {
         getRaftLog(raftId: string, start: number, limit: number, targetLeader: boolean, reqUids: string[], callback: Callback, reqLogger: any): void;
         getRaftBuckets(raftId: string, reqUids: string[], callback: Callback, reqLogger: any): void;
         getBucketInformation(bucketName: string, reqUids: string[], callback: Callback, reqLogger: any): void;
+        execBatch(bucketName: string, batch: Array<BatchOperation>, reqUids: string[], callback: Callback, reqLogger: any): void;
         healthcheck(log: any, callback: Callback): void;
         livecheck(log: any, callback: Callback): void;
         private endRespond(res: any, ret: any, log: any, callback: Callback): void;

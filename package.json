@@ -6,6 +6,14 @@
   "version": "7.10.7",
   "description": "Bucket Client",
   "main": "index.js",
+  "files": [
+      "CONTRIBUTING.md",
+      "config.json",
+      "index.d.ts",
+      "lib/*",
+      "licenses/*",
+      "yarn.lock"
+  ],
   "scripts": {
     "ft_test": "mocha tests/functional",
     "lint": "eslint $(git ls-files '*.js')",

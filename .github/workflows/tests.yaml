@@ -12,15 +12,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '16'
           cache: yarn
+
       - name: install dependencies
         run: yarn install --immutable --network-concurrency=1
+
       - name: run lint
         run: yarn run --silent lint -- --max-warnings 0
+
       - name: set host bucketclient.testing.local
         run: sudo bash -c 'echo "127.0.0.1 bucketclient.testing.local" >> /etc/hosts'
+
       - name: run test
         run: yarn run --silent test
+
+  go-client-test:
+    name: Test the Go client
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: go/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Run GolangCI linter
+        uses: golangci/golangci-lint-action@v6
+        with:
+          working-directory: go/
+          version: v1.61
+
+      - name: Run unit tests
+        run: make test-coverage

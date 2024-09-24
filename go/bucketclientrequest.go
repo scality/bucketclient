@@ -29,7 +29,7 @@ func RequestBodyContentTypeOption(contentType string) RequestOption {
 	}
 }
 
-func Idempotent(ros *requestOptionSet) {
+func RequestIdempotent(ros *requestOptionSet) {
 	ros.idempotent = true
 }
 

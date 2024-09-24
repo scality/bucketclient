@@ -89,7 +89,7 @@ var _ = Describe("BucketClient.Request()", func() {
 				"PostIdempotent", "POST", "/idempotent/url",
 				bucketclient.RequestBodyContentTypeOption("text/plain"),
 				bucketclient.RequestBodyOption([]byte("post body")),
-				bucketclient.Idempotent,
+				bucketclient.RequestIdempotent,
 			)).To(Equal([]byte("got it")))
 		})
 		It("fails with a 400 response on GET request", func(ctx SpecContext) {

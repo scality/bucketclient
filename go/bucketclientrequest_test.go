@@ -25,25 +25,16 @@ func (rc *shortReadCloser) Close() error {
 }
 
 var _ = Describe("BucketClient.Request()", func() {
-	BeforeEach(func() {
-		httpmock.Reset()
-	})
-
 	It("with invalid URL", func(ctx SpecContext) {
+		// Here we do a basic test checking that errors from
+		// the connection layer are forwarded correctly, "no
+		// responder found" is the error returned by httpmock
 		invalidClient := bucketclient.New("http://invalid:9000")
 		_, err := invalidClient.Request(ctx, "GetSomething", "GET", "/foo/bar")
-		Expect(err).To(MatchError(ContainSubstring("no such host")))
+		Expect(err).To(MatchError(ContainSubstring("no responder found")))
 	})
 
 	Context("with valid URL", Ordered, func() {
-		var client *bucketclient.BucketClient
-		BeforeAll(func() {
-			httpmock.Activate()
-			client = bucketclient.New("http://localhost:9000")
-		})
-		AfterAll(func() {
-			defer httpmock.DeactivateAndReset()
-		})
 		It("succeeds with a 200 response on GET request", func(ctx SpecContext) {
 			httpmock.RegisterResponder(
 				"GET", "http://localhost:9000/default/bucket/somebucket/someobject",

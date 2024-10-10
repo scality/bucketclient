@@ -90,7 +90,9 @@ func (client *BucketClient) CreateBucket(ctx context.Context,
 }
 
 func bucketAttributeUIDsMatch(attributes1 []byte, attributes2 []byte) bool {
-	var parsedAttr1, parsedAttr2 map[string]interface{}
+	var parsedAttr1, parsedAttr2 struct {
+		UID string `json:"uid"`
+	}
 
 	err := json.Unmarshal(attributes1, &parsedAttr1)
 	if err != nil {
@@ -100,10 +102,8 @@ func bucketAttributeUIDsMatch(attributes1 []byte, attributes2 []byte) bool {
 	if err != nil {
 		return false
 	}
-	uid1, ok1 := parsedAttr1["uid"]
-	uid2, ok2 := parsedAttr2["uid"]
-	if !ok1 || !ok2 {
+	if parsedAttr1.UID == "" || parsedAttr2.UID == "" {
 		return false
 	}
-	return uid1 == uid2
+	return parsedAttr1.UID == parsedAttr2.UID
 }

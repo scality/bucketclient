@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
+	"strconv"
 )
 
 type createBucketOptionSet struct {
@@ -43,10 +45,14 @@ func (client *BucketClient) CreateBucket(ctx context.Context,
 	for _, opt := range opts {
 		opt(&parsedOpts)
 	}
+
 	resource := fmt.Sprintf("/default/bucket/%s", bucketName)
+	query := url.Values{}
+
 	if parsedOpts.sessionId > 0 {
-		resource += fmt.Sprintf("?raftsession=%d", parsedOpts.sessionId)
+		query.Set("raftsession", strconv.Itoa(parsedOpts.sessionId))
 	}
+	resource += "?" + query.Encode()
 	requestOptions := []RequestOption{
 		RequestBodyOption(bucketAttributes),
 		RequestBodyContentTypeOption("application/json"),

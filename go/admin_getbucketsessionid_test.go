@@ -23,4 +23,11 @@ var _ = Describe("AdminGetBucketSessionId()", func() {
 		_, err := client.AdminGetBucketSessionID(ctx, "nosuchbucket")
 		Expect(err).To(MatchError(ContainSubstring("bucketd returned HTTP status 404")))
 	})
+	It("escapes a bucket name containing slashes", func(ctx SpecContext) {
+		httpmock.RegisterResponder(
+			"GET", "http://localhost:9000/_/buckets/my-bucket%2Fwith-a-slash/id",
+			httpmock.NewStringResponder(200, "42"),
+		)
+		Expect(client.AdminGetBucketSessionID(ctx, "my-bucket/with-a-slash")).To(Equal(42))
+	})
 })

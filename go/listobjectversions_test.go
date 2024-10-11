@@ -30,8 +30,8 @@ var _ = Describe("ListObjectVersions()", func() {
 
 	It("returns a non-empty listing result with URL-encoded marker, maxKeys and truncation", func(ctx SpecContext) {
 		httpmock.RegisterResponder(
-			"GET", "/default/bucket/my-bucket?listingType=DelimiterVersions"+
-				"&keyMarker=foo%2Fbar&versionIdMarker=123+4&maxKeys=3",
+			"GET", "/default/bucket/my-bucket?keyMarker=foo%2Fbar&listingType=DelimiterVersions"+
+				"&maxKeys=3&versionIdMarker=123+4",
 			httpmock.NewStringResponder(200, `{
     "Versions": [
         {"key": "fop", "versionId": "123"},

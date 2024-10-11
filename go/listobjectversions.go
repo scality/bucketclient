@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"strconv"
 )
 
 type ListObjectVersionsOption func(*listObjectVersionsOptionSet) error
@@ -67,9 +68,7 @@ type listObjectVersionsOptionSet struct {
 
 func parseListObjectVersionsOptions(opts []ListObjectVersionsOption) (listObjectVersionsOptionSet, error) {
 	parsedOpts := listObjectVersionsOptionSet{
-		keyMarker:       "",
-		versionIdMarker: "",
-		maxKeys:         -1,
+		maxKeys: -1,
 	}
 	for _, opt := range opts {
 		err := opt(&parsedOpts)
@@ -82,7 +81,10 @@ func parseListObjectVersionsOptions(opts []ListObjectVersionsOption) (listObject
 
 func (client *BucketClient) ListObjectVersions(ctx context.Context,
 	bucketName string, opts ...ListObjectVersionsOption) (*ListObjectVersionsResponse, error) {
-	resource := fmt.Sprintf("/default/bucket/%s?listingType=DelimiterVersions", bucketName)
+	resource := fmt.Sprintf("/default/bucket/%s", bucketName)
+	query := url.Values{}
+	query.Set("listingType", "DelimiterVersions")
+
 	options, err := parseListObjectVersionsOptions(opts)
 	if err != nil {
 		return nil, &BucketClientError{
@@ -90,13 +92,13 @@ func (client *BucketClient) ListObjectVersions(ctx context.Context,
 		}
 	}
 	if options.keyMarker != "" {
-		resource += fmt.Sprintf("&keyMarker=%s&versionIdMarker=%s",
-			url.QueryEscape(options.keyMarker),
-			url.QueryEscape(options.versionIdMarker))
+		query.Set("keyMarker", options.keyMarker)
+		query.Set("versionIdMarker", options.versionIdMarker)
 	}
 	if options.maxKeys != -1 {
-		resource += fmt.Sprintf("&maxKeys=%d", options.maxKeys)
+		query.Set("maxKeys", strconv.Itoa(options.maxKeys))
 	}
+	resource += "?" + query.Encode()
 	responseBody, err := client.Request(ctx, "ListObjectVersions", "GET", resource)
 	if err != nil {
 		return nil, err

@@ -27,4 +27,12 @@ var _ = Describe("AdminSetBucketAccessMode()", func() {
 			"nosuchbucket", bucketclient.BucketAccessModeReadOnly)
 		Expect(err).To(MatchError(ContainSubstring("bucketd returned HTTP status 404")))
 	})
+	It("escapes a bucket name containing slashes", func(ctx SpecContext) {
+		httpmock.RegisterResponder(
+			"PUT", "http://localhost:9000/_/buckets/my-bucket%2Fwith-a-slash/accessMode?mode=read-only",
+			httpmock.NewStringResponder(200, ""),
+		)
+		Expect(client.AdminSetBucketAccessMode(ctx,
+			"my-bucket/with-a-slash", bucketclient.BucketAccessModeReadOnly)).To(Succeed())
+	})
 })

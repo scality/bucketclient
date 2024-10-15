@@ -12,8 +12,8 @@ type ListObjectVersionsOption func(*listObjectVersionsOptionSet) error
 
 func ListObjectVersionsMarkerOption(keyMarker string, versionIdMarker string) ListObjectVersionsOption {
 	return func(opts *listObjectVersionsOptionSet) error {
-		opts.keyMarker = keyMarker
-		opts.versionIdMarker = versionIdMarker
+		opts.keyMarker = &keyMarker
+		opts.versionIdMarker = &versionIdMarker
 		return nil
 	}
 }
@@ -23,7 +23,7 @@ func ListObjectVersionsMaxKeysOption(maxKeys int) ListObjectVersionsOption {
 		if maxKeys < 0 || maxKeys > 10000 {
 			return fmt.Errorf("maxKeys=%d is out of the valid range [0, 10000]", maxKeys)
 		}
-		opts.maxKeys = maxKeys
+		opts.maxKeys = &maxKeys
 		return nil
 	}
 }
@@ -38,8 +38,8 @@ func ListObjectVersionsMaxKeysOption(maxKeys int) ListObjectVersionsOption {
 // client.
 func ListObjectVersionsLastMarkerOption(lastKeyMarker string, lastVersionIdMarker string) ListObjectVersionsOption {
 	return func(opts *listObjectVersionsOptionSet) error {
-		opts.lastKeyMarker = lastKeyMarker
-		opts.lastVersionIdMarker = lastVersionIdMarker
+		opts.lastKeyMarker = &lastKeyMarker
+		opts.lastVersionIdMarker = &lastVersionIdMarker
 		return nil
 	}
 }
@@ -59,17 +59,15 @@ type ListObjectVersionsResponse struct {
 }
 
 type listObjectVersionsOptionSet struct {
-	keyMarker           string
-	versionIdMarker     string
-	maxKeys             int
-	lastKeyMarker       string
-	lastVersionIdMarker string
+	keyMarker           *string
+	versionIdMarker     *string
+	maxKeys             *int
+	lastKeyMarker       *string
+	lastVersionIdMarker *string
 }
 
 func parseListObjectVersionsOptions(opts []ListObjectVersionsOption) (listObjectVersionsOptionSet, error) {
-	parsedOpts := listObjectVersionsOptionSet{
-		maxKeys: -1,
-	}
+	parsedOpts := listObjectVersionsOptionSet{}
 	for _, opt := range opts {
 		err := opt(&parsedOpts)
 		if err != nil {
@@ -91,27 +89,29 @@ func (client *BucketClient) ListObjectVersions(ctx context.Context,
 			"ListObjectVersions", "GET", client.Endpoint, resource, 0, "", err,
 		}
 	}
-	if options.keyMarker != "" {
-		query.Set("keyMarker", options.keyMarker)
-		query.Set("versionIdMarker", options.versionIdMarker)
+	if options.keyMarker != nil {
+		query.Set("keyMarker", *options.keyMarker)
+		query.Set("versionIdMarker", *options.versionIdMarker)
 	}
-	if options.maxKeys != -1 {
-		query.Set("maxKeys", strconv.Itoa(options.maxKeys))
+	if options.maxKeys != nil {
+		query.Set("maxKeys", strconv.Itoa(*options.maxKeys))
 	}
-	resource += "?" + query.Encode()
+	u, _ := url.Parse(resource)
+	u.RawQuery = query.Encode()
+	resource = u.String()
 	responseBody, err := client.Request(ctx, "ListObjectVersions", "GET", resource)
 	if err != nil {
 		return nil, err
 	}
-	var parsedResponse = new(ListObjectVersionsResponse)
-	jsonErr := json.Unmarshal(responseBody, parsedResponse)
+	var parsedResponse ListObjectVersionsResponse
+	jsonErr := json.Unmarshal(responseBody, &parsedResponse)
 	if jsonErr != nil {
 		return nil, ErrorMalformedResponse("ListObjectVersions", "GET",
 			client.Endpoint, resource, jsonErr)
 	}
-	if options.lastKeyMarker != "" {
-		truncateListObjectVersionsResponse(parsedResponse,
-			options.lastKeyMarker, options.lastVersionIdMarker)
+	if options.lastKeyMarker != nil {
+		truncateListObjectVersionsResponse(&parsedResponse,
+			*options.lastKeyMarker, *options.lastVersionIdMarker)
 	}
-	return parsedResponse, nil
+	return &parsedResponse, nil
 }

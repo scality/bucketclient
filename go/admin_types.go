@@ -34,3 +34,10 @@ type SessionLogEntry struct {
 	Value string `json:"value,omitempty"`
 	Type  string `json:"type,omitempty"`
 }
+
+type BucketAccessMode string
+
+const (
+	BucketAccessModeReadWrite BucketAccessMode = "read-write"
+	BucketAccessModeReadOnly  BucketAccessMode = "read-only"
+)

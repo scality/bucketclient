@@ -52,7 +52,9 @@ func (client *BucketClient) CreateBucket(ctx context.Context,
 	if parsedOpts.sessionId > 0 {
 		query.Set("raftsession", strconv.Itoa(parsedOpts.sessionId))
 	}
-	resource += "?" + query.Encode()
+	u, _ := url.Parse(resource)
+	u.RawQuery = query.Encode()
+	resource = u.String()
 	requestOptions := []RequestOption{
 		RequestBodyOption(bucketAttributes),
 		RequestBodyContentTypeOption("application/json"),

@@ -1,4 +1,4 @@
-'use strict'; // eslint-disable-line strict
+'use strict';  
 
 const assert = require('assert');
 const fs = require('fs');
@@ -54,11 +54,11 @@ const env = {
     https: {
         s: handler => https.createServer(httpsOptions, handler),
         c: new RESTClient(['bucketclient.testing.local:9000'],
-                          undefined,
-                          true,
-                          httpsOptions.key,
-                          httpsOptions.cert,
-                          httpsOptions.ca[0]),
+            undefined,
+            true,
+            httpsOptions.key,
+            httpsOptions.cert,
+            httpsOptions.ca[0]),
     },
 };
 

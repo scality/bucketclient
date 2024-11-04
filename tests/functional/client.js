@@ -1,4 +1,4 @@
-'use strict'; // eslint-disable-line strict
+'use strict';  
 
 const assert = require('assert');
 
@@ -18,7 +18,7 @@ describe('Bucket Client tests', function testClient() {
 
     it('should create a new bucket', done => {
         client.createBucket(bucketName, reqUids,
-                            JSON.stringify(bucketAttributes), done);
+            JSON.stringify(bucketAttributes), done);
     });
 
     it('should try to create the same bucket and fail', done => {
@@ -90,31 +90,31 @@ describe('Bucket Client tests', function testClient() {
                 dataBufs.push(data);
                 dataLen += data.length;
             }).on('error', done)
-              .on('end', () => {
-                  const data = Buffer.concat(dataBufs, dataLen).toString();
-                  const obj = JSON.parse(data);
-                  assert.strictEqual(Object.prototype.hasOwnProperty.call(
-                      obj, 'info'), true);
-                  const info = obj.info;
-                  assert.strictEqual(['start', 'end', 'cseq', 'prune']
-                      .every(key => Object.prototype.hasOwnProperty.call(
-                          obj.info, key)), true);
-                  assert.strictEqual(info.start >= start, true);
-                  assert.strictEqual(info.end <= end, true);
-                  // NOTE: this check will be removed when pruned logs are
-                  // retrieved also
-                  assert.strictEqual(info.prune <= info.start, true);
-                  assert.strictEqual(info.cseq >= info.end, true);
-                  assert.strictEqual(Object.prototype.hasOwnProperty.call(
-                      obj, 'log'), true);
-                  const logs = obj.log;
-                  assert.strictEqual(Array.isArray(logs), true);
-                  assert.strictEqual(logs.length >= 1, true);
-                  assert.strictEqual(logs.every(log =>
-                      (typeof log === 'object') && (Object.keys(log).length > 0)
-                  ), true);
-                  return done();
-              });
+                .on('end', () => {
+                    const data = Buffer.concat(dataBufs, dataLen).toString();
+                    const obj = JSON.parse(data);
+                    assert.strictEqual(Object.prototype.hasOwnProperty.call(
+                        obj, 'info'), true);
+                    const info = obj.info;
+                    assert.strictEqual(['start', 'end', 'cseq', 'prune']
+                        .every(key => Object.prototype.hasOwnProperty.call(
+                            obj.info, key)), true);
+                    assert.strictEqual(info.start >= start, true);
+                    assert.strictEqual(info.end <= end, true);
+                    // NOTE: this check will be removed when pruned logs are
+                    // retrieved also
+                    assert.strictEqual(info.prune <= info.start, true);
+                    assert.strictEqual(info.cseq >= info.end, true);
+                    assert.strictEqual(Object.prototype.hasOwnProperty.call(
+                        obj, 'log'), true);
+                    const logs = obj.log;
+                    assert.strictEqual(Array.isArray(logs), true);
+                    assert.strictEqual(logs.length >= 1, true);
+                    assert.strictEqual(logs.every(log =>
+                        (typeof log === 'object') && (Object.keys(log).length > 0)
+                    ), true);
+                    return done();
+                });
             return undefined;
         });
     });

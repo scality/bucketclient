@@ -1,18 +1,18 @@
 {
   "name": "bucketclient",
   "engines": {
-    "node": ">=16"
+    "node": ">=22"
   },
-  "version": "8.1.10",
+  "version": "8.1.11",
   "description": "Bucket Client",
   "main": "index.js",
   "files": [
-      "CONTRIBUTING.md",
-      "config.json",
-      "index.d.ts",
-      "lib/*",
-      "licenses/*",
-      "yarn.lock"
+    "CONTRIBUTING.md",
+    "config.json",
+    "index.d.ts",
+    "lib/*",
+    "licenses/*",
+    "yarn.lock"
   ],
   "scripts": {
     "ft_test": "mocha tests/functional",
@@ -34,15 +34,15 @@
   },
   "homepage": "https://github.com/scality/bucketclient#readme",
   "devDependencies": {
-    "eslint": "^2.4.0",
-    "eslint-config-airbnb": "^6.0.0",
+    "eslint": "^9.14.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-scality": "scality/Guidelines#ec33dfb",
-    "eslint-plugin-react": "4.2.3",
-    "mocha": ""
+    "eslint-plugin-react": "7.37.2",
+    "mocha": "10.8.2"
   },
   "dependencies": {
-    "arsenal": "git+https://github.com/scality/Arsenal#8.1.87",
-    "httpagent": "git+https://github.com/scality/httpagent#1.0.5",
-    "werelogs": "scality/werelogs#8.1.2"
+    "arsenal": "git+https://github.com/scality/Arsenal#9a6451d247a8c53605e0311b4b3824f2612481eb",
+    "httpagent": "git+https://github.com/scality/httpagent#1.0.6",
+    "werelogs": "scality/werelogs#8.1.5"
   }
 }

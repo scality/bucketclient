@@ -6,6 +6,10 @@
   "version": "8.1.10",
   "description": "Bucket Client",
   "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "promises": "./lib/promises.js"
+  },
   "scripts": {
     "ft_test": "mocha tests/functional",
     "lint": "eslint $(git ls-files '*.js')",

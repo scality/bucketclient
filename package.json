@@ -42,8 +42,8 @@
     "mocha": "10.8.2"
   },
   "dependencies": {
-    "arsenal": "git+https://github.com/scality/Arsenal#9a6451d247a8c53605e0311b4b3824f2612481eb",
-    "httpagent": "git+https://github.com/scality/httpagent#1.0.6",
+    "arsenal": "git+https://github.com/scality/arsenal#8.2.1",
+    "httpagent": "git+https://github.com/scality/httpagent#1.1.0",
     "werelogs": "scality/werelogs#8.1.5"
   }
 }

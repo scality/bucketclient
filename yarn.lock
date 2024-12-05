@@ -640,9 +640,9 @@ arraybuffer.prototype.slice@^1.0.3:
     is-array-buffer "^3.0.4"
     is-shared-array-buffer "^1.0.2"
 
-"arsenal@git+https://github.com/scality/Arsenal#632431b49803dc1c0106fa98c0b594829c9f4be8":
+"arsenal@git+https://github.com/scality/Arsenal#0433a70e00ab869126a504d67aa0b9d5bb9056b0":
   version "8.2.0"
-  resolved "git+https://github.com/scality/Arsenal#632431b49803dc1c0106fa98c0b594829c9f4be8"
+  resolved "git+https://github.com/scality/Arsenal#0433a70e00ab869126a504d67aa0b9d5bb9056b0"
   dependencies:
     "@azure/identity" "^4.5.0"
     "@azure/storage-blob" "^12.25.0"

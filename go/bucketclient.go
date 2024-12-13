@@ -7,6 +7,7 @@ import (
 type BucketClient struct {
 	Endpoint   string
 	HTTPClient *http.Client
+	Metrics    *BucketClientMetrics
 }
 
 // New creates a new BucketClient instance, with the provided endpoint (e.g. "localhost:9000")

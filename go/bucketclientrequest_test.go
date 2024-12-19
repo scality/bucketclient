@@ -34,7 +34,7 @@ var _ = Describe("BucketClient.Request()", func() {
 		Expect(err).To(MatchError(ContainSubstring("no responder found")))
 	})
 
-	Context("with valid URL", Ordered, func() {
+	Context("with valid URL and default HTTP client", Ordered, func() {
 		It("succeeds with a 200 response on GET request", func(ctx SpecContext) {
 			httpmock.RegisterResponder(
 				"GET", "http://localhost:9000/default/bucket/somebucket/someobject",
@@ -131,6 +131,56 @@ var _ = Describe("BucketClient.Request()", func() {
 
 			_, err := client.Request(timeoutCtx, "GetObject", "GET", "/foo/bar")
 			Expect(err).To(MatchError(context.DeadlineExceeded))
+		})
+	})
+
+	Context("with valid URL and custom HTTP client with timeout", Ordered, func() {
+		var clientWithTimeout *bucketclient.BucketClient
+
+		BeforeAll(func() {
+			clientWithTimeout = bucketclient.NewWithHTTPClient("http://localhost:9000",
+				&http.Client{
+					Timeout: 1 * time.Second,
+				})
+		})
+
+		It("succeeds with a 200 response on GET request", func(ctx SpecContext) {
+			httpmock.RegisterResponder(
+				"GET", "http://localhost:9000/default/bucket/somebucket/someobject",
+				httpmock.NewStringResponder(200, `{"some":"metadata","version":"1234"}`),
+			)
+			Expect(clientWithTimeout.Request(ctx, "GetObject", "GET",
+				"/default/bucket/somebucket/someobject")).To(Equal(
+				[]byte(`{"some":"metadata","version":"1234"}`)))
+		})
+
+		It("times out after the configured delay without a response", func(ctx SpecContext) {
+			httpmock.RegisterResponder(
+				"GET", "http://localhost:9000/default/bucket/somebucket/someobject",
+				func(req *http.Request) (*http.Response, error) {
+					// respond after 2 seconds > timeout of one second
+					time.Sleep(2 * time.Second)
+					return httpmock.NewStringResponse(200,
+						`{"some":"metadata","version":"1234"}`), nil
+				},
+			)
+			startTime := time.Now()
+			_, err := clientWithTimeout.Request(ctx, "GetObject", "GET",
+				"/default/bucket/somebucket/someobject")
+			duration := time.Since(startTime)
+
+			Expect(err).ToNot(BeNil())
+			bcErr, isBCErr := err.(*bucketclient.BucketClientError)
+			Expect(isBCErr).To(BeTrue())
+			Expect(bcErr.StatusCode).To(Equal(0))
+			// the error returned by the HTTP layer seems to be inconsistent between
+			// "Client.Timeout exceeded" and "context deadline exceeded" for some reason,
+			// I did not dig into it further but it makes it hard to properly test the
+			// properties about the returned error, so just checking that there is an
+			// error and that we didn't wait much more than the timeout.
+			Expect(ctx.Err()).To(BeNil())
+			Expect(duration).To(BeNumerically(">=", 900*time.Millisecond))
+			Expect(duration).To(BeNumerically("<=", 1100*time.Millisecond))
 		})
 	})
 })

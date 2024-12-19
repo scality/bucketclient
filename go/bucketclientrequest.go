@@ -115,7 +115,7 @@ func (client *BucketClient) Request(ctx context.Context,
 			if options.idempotent {
 				request.Header["Idempotency-Key"] = []string{}
 			}
-			response, err = http.DefaultClient.Do(request)
+			response, err = client.Do(request)
 		}
 	}
 	if err != nil {

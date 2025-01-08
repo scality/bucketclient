@@ -13,7 +13,7 @@ type PostBatchEntry struct {
 }
 
 func (client *BucketClient) PostBatch(ctx context.Context,
-	bucketName string, batch []PostBatchEntry) error {
+	bucketName string, batch []PostBatchEntry, opts ...RequestOption) error {
 	resource := fmt.Sprintf("/default/batch/%s", bucketName)
 	postPayload := struct {
 		Batch []PostBatchEntry `json:"batch"`
@@ -26,10 +26,12 @@ func (client *BucketClient) PostBatch(ctx context.Context,
 		}
 	}
 	_, err = client.Request(ctx, "PostBatch", "POST", resource,
-		RequestBodyOption(postBody),
-		RequestBodyContentTypeOption("application/json"),
-		// Because we write a batch of low-level entries directly to
-		// the database, the request is idempotent.
-		RequestIdempotent)
+		append([]RequestOption{
+			RequestBodyOption(postBody),
+			RequestBodyContentTypeOption("application/json"),
+			// Because we write a batch of low-level entries directly to
+			// the database, the request is idempotent.
+			RequestIdempotent,
+		}, opts...)...)
 	return err
 }

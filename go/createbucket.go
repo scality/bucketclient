@@ -12,6 +12,7 @@ import (
 type createBucketOptionSet struct {
 	sessionId      int
 	makeIdempotent bool
+	requestUIDs    string
 }
 
 type CreateBucketOption func(*createBucketOptionSet)
@@ -26,22 +27,27 @@ func CreateBucketMakeIdempotent(options *createBucketOptionSet) {
 	options.makeIdempotent = true
 }
 
+func CreateBucketRequestUIDsOption(uids string) CreateBucketOption {
+	return func(options *createBucketOptionSet) {
+		options.requestUIDs = uids
+	}
+}
+
 // CreateBucket creates a bucket in metadata.
 // bucketAttributes is a JSON blob of bucket attributes
 // opts is a set of options:
 //
-//	CreateBucketSessionIdOption forces the session ID where the bucket to be
-//	    created will land
+//		CreateBucketSessionIdOption forces the session ID where the bucket to be
+//		    created will land
 //
-//	CreateBucketMakeIdempotent makes the request return a success if a bucket
-//	    with the same UID already exists (otherwise returns 409 Conflict, as
-//	    if the option is not passed)
+//		CreateBucketMakeIdempotent makes the request return a success if a bucket
+//		    with the same UID already exists (otherwise returns 409 Conflict, as
+//		    if the option is not passed)
+//
+//	     CreateBucketRequestUIDsOption attaches existing UIDs to the CreateBucket request
 func (client *BucketClient) CreateBucket(ctx context.Context,
 	bucketName string, bucketAttributes []byte, opts ...CreateBucketOption) error {
-	parsedOpts := createBucketOptionSet{
-		sessionId:      0,
-		makeIdempotent: false,
-	}
+	parsedOpts := createBucketOptionSet{}
 	for _, opt := range opts {
 		opt(&parsedOpts)
 	}
@@ -65,6 +71,9 @@ func (client *BucketClient) CreateBucket(ctx context.Context,
 		// first retry if it initially succeeded, but it will
 		// then be considered a success)
 		requestOptions = append(requestOptions, RequestIdempotent)
+	}
+	if parsedOpts.requestUIDs != "" {
+		requestOptions = append(requestOptions, RequestUIDsOption(parsedOpts.requestUIDs))
 	}
 	_, err := client.Request(ctx, "CreateBucket", "POST", resource, requestOptions...)
 	if err == nil {

@@ -75,6 +75,14 @@ func ListBasicNoValuesOption() ListBasicOption {
 	}
 }
 
+// ListBasicRequestUIDsOption attaches existing request UIDs to the ListBasic request
+func ListBasicRequestUIDsOption(uids string) ListBasicOption {
+	return func(opts *listBasicOptionSet) error {
+		opts.requestUIDs = uids
+		return nil
+	}
+}
+
 type ListBasicEntry struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
@@ -83,13 +91,14 @@ type ListBasicEntry struct {
 type ListBasicResponse []ListBasicEntry
 
 type listBasicOptionSet struct {
-	gt       *string
-	gte      *string
-	lt       *string
-	lte      *string
-	maxKeys  *int
-	noKeys   bool
-	noValues bool
+	gt          *string
+	gte         *string
+	lt          *string
+	lte         *string
+	maxKeys     *int
+	noKeys      bool
+	noValues    bool
+	requestUIDs string
 }
 
 func parseListBasicOptions(opts []ListBasicOption) (listBasicOptionSet, error) {
@@ -139,7 +148,11 @@ func (client *BucketClient) ListBasic(ctx context.Context,
 	u, _ := url.Parse(resource)
 	u.RawQuery = query.Encode()
 	resource = u.String()
-	responseBody, err := client.Request(ctx, "ListBasic", "GET", resource)
+	requestOptions := []RequestOption{}
+	if options.requestUIDs != "" {
+		requestOptions = append(requestOptions, RequestUIDsOption(options.requestUIDs))
+	}
+	responseBody, err := client.Request(ctx, "ListBasic", "GET", resource, requestOptions...)
 	if err != nil {
 		return nil, err
 	}

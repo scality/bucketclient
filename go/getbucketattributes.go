@@ -7,7 +7,8 @@ import (
 
 // GetBucketAttributes retrieves the JSON blob containing the bucket
 // attributes attached to a bucket.
-func (client *BucketClient) GetBucketAttributes(ctx context.Context, bucketName string) ([]byte, error) {
+func (client *BucketClient) GetBucketAttributes(ctx context.Context, bucketName string,
+	opts ...RequestOption) ([]byte, error) {
 	resource := fmt.Sprintf("/default/attributes/%s", bucketName)
-	return client.Request(ctx, "GetBucketAttributes", "GET", resource)
+	return client.Request(ctx, "GetBucketAttributes", "GET", resource, opts...)
 }

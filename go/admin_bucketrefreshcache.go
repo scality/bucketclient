@@ -9,8 +9,9 @@ import (
 // AdminBucketRefreshCache refreshes the bucketd cache of metastore
 // entries for the given bucket. Useful after switching the raft session
 // of a bucket.
-func (client *BucketClient) AdminBucketRefreshCache(ctx context.Context, bucketName string) error {
+func (client *BucketClient) AdminBucketRefreshCache(ctx context.Context, bucketName string,
+	opts ...RequestOption) error {
 	resource := fmt.Sprintf("/_/buckets/%s/refreshCache", url.PathEscape(bucketName))
-	_, err := client.Request(ctx, "AdminBucketRefreshCache", "GET", resource)
+	_, err := client.Request(ctx, "AdminBucketRefreshCache", "GET", resource, opts...)
 	return err
 }

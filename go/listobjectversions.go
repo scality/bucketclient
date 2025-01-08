@@ -44,6 +44,15 @@ func ListObjectVersionsLastMarkerOption(lastKeyMarker string, lastVersionIdMarke
 	}
 }
 
+// ListObjectVersionsRequestUIDsOption attaches existing request UIDs
+// to the ListObjectVersions request
+func ListObjectVersionsRequestUIDsOption(uids string) ListObjectVersionsOption {
+	return func(opts *listObjectVersionsOptionSet) error {
+		opts.requestUIDs = uids
+		return nil
+	}
+}
+
 type ListObjectVersionsEntry struct {
 	Key       string `json:"key"`
 	VersionId string `json:"versionId"`
@@ -64,6 +73,7 @@ type listObjectVersionsOptionSet struct {
 	maxKeys             *int
 	lastKeyMarker       *string
 	lastVersionIdMarker *string
+	requestUIDs         string
 }
 
 func parseListObjectVersionsOptions(opts []ListObjectVersionsOption) (listObjectVersionsOptionSet, error) {
@@ -99,7 +109,12 @@ func (client *BucketClient) ListObjectVersions(ctx context.Context,
 	u, _ := url.Parse(resource)
 	u.RawQuery = query.Encode()
 	resource = u.String()
-	responseBody, err := client.Request(ctx, "ListObjectVersions", "GET", resource)
+	requestOptions := []RequestOption{}
+	if options.requestUIDs != "" {
+		requestOptions = append(requestOptions, RequestUIDsOption(options.requestUIDs))
+	}
+	responseBody, err := client.Request(ctx, "ListObjectVersions", "GET", resource,
+		requestOptions...)
 	if err != nil {
 		return nil, err
 	}

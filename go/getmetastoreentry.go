@@ -7,9 +7,10 @@ import (
 )
 
 // GetMetastoreEntry retrieves and parses a metastore entry for the given bucket
-func (client *BucketClient) GetMetastoreEntry(ctx context.Context, bucketName string) (MetastoreEntry, error) {
+func (client *BucketClient) GetMetastoreEntry(ctx context.Context, bucketName string,
+	opts ...RequestOption) (MetastoreEntry, error) {
 	resource := fmt.Sprintf("/default/metastore/db/%s", bucketName)
-	responseBody, err := client.Request(ctx, "GetMetastoreEntry", "GET", resource)
+	responseBody, err := client.Request(ctx, "GetMetastoreEntry", "GET", resource, opts...)
 	if err != nil {
 		return MetastoreEntry{}, err
 	}

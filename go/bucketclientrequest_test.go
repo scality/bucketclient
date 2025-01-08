@@ -44,6 +44,21 @@ var _ = Describe("BucketClient.Request()", func() {
 				"/default/bucket/somebucket/someobject")).To(Equal(
 				[]byte(`{"some":"metadata","version":"1234"}`)))
 		})
+		It("succeeds with a 200 response on GET request with provided request UIDs", func(ctx SpecContext) {
+			httpmock.RegisterResponder(
+				"GET", "http://localhost:9000/default/bucket/somebucket/someobject",
+				func(req *http.Request) (*http.Response, error) {
+					uids := req.Header.Get("x-scal-request-uids")
+					Expect(uids).To(Equal("my-uids"))
+
+					return httpmock.NewStringResponse(200, `{"some":"metadata","version":"1234"}`), nil
+				},
+			)
+			Expect(client.Request(ctx, "GetObject", "GET",
+				"/default/bucket/somebucket/someobject",
+				bucketclient.RequestUIDsOption("my-uids"))).To(Equal(
+				[]byte(`{"some":"metadata","version":"1234"}`)))
+		})
 		It("sends PUT request with body and succeeds with a 200 response", func(ctx SpecContext) {
 			httpmock.RegisterResponder(
 				"PUT", "http://localhost:9000/default/bucket/somebucket/someobject",

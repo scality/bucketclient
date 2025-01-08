@@ -18,12 +18,14 @@ type AdminGetSessionLogResponse struct {
 // if targetLeader is true, it fetches the oplog from the leader,
 // otherwise fetches from one of the followers
 func (client *BucketClient) AdminGetSessionLog(ctx context.Context,
-	sessionId int, beginSeq int64, nRecords int, targetLeader bool) (*AdminGetSessionLogResponse, error) {
-	resource := fmt.Sprintf("/_/raft_sessions/%d/log?begin=%d&limit=%d", sessionId, beginSeq, nRecords)
+	sessionId int, beginSeq int64, nRecords int, targetLeader bool,
+	opts ...RequestOption) (*AdminGetSessionLogResponse, error) {
+	resource := fmt.Sprintf("/_/raft_sessions/%d/log?begin=%d&limit=%d",
+		sessionId, beginSeq, nRecords)
 	if targetLeader {
 		resource += "&target_leader=true"
 	}
-	responseBody, err := client.Request(ctx, "AdminGetSessionLog", "GET", resource)
+	responseBody, err := client.Request(ctx, "AdminGetSessionLog", "GET", resource, opts...)
 	if err != nil {
 		return nil, err
 	}

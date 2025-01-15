@@ -12,6 +12,7 @@ import (
 type requestOptionSet struct {
 	requestBody            []byte
 	requestBodyContentType string
+	requestUIDs            string
 	idempotent             bool
 }
 
@@ -26,6 +27,12 @@ func RequestBodyOption(body []byte) RequestOption {
 func RequestBodyContentTypeOption(contentType string) RequestOption {
 	return func(ros *requestOptionSet) {
 		ros.requestBodyContentType = contentType
+	}
+}
+
+func RequestUIDsOption(uids string) RequestOption {
+	return func(ros *requestOptionSet) {
+		ros.requestUIDs = uids
 	}
 }
 
@@ -64,6 +71,11 @@ func (client *BucketClient) Request(ctx context.Context,
 			if options.requestBodyContentType != "" {
 				request.Header.Add("Content-Type", string(options.requestBodyContentType))
 			}
+
+			if options.requestUIDs != "" {
+				request.Header.Add("x-scal-request-uids", options.requestUIDs)
+			}
+
 			if options.idempotent {
 				request.Header["Idempotency-Key"] = []string{}
 			}

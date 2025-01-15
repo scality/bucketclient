@@ -13,9 +13,9 @@ import (
 //
 // Returns an error if the bucket doesn't exist, or if a request error occurs.
 func (client *BucketClient) AdminSetBucketAccessMode(ctx context.Context,
-	bucketName string, accessMode BucketAccessMode) error {
+	bucketName string, accessMode BucketAccessMode, opts ...RequestOption) error {
 	resource := fmt.Sprintf("/_/buckets/%s/accessMode?mode=%s",
 		url.PathEscape(bucketName), accessMode)
-	_, err := client.Request(ctx, "AdminSetBucketAccessMode", "PUT", resource)
+	_, err := client.Request(ctx, "AdminSetBucketAccessMode", "PUT", resource, opts...)
 	return err
 }

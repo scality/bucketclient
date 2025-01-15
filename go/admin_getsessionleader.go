@@ -12,9 +12,10 @@ import (
 // Returns nil and an error if the raft session doesn't exist, if
 // bucketd is not connected to the leader, or if a request error
 // occurs.
-func (client *BucketClient) AdminGetSessionLeader(ctx context.Context, sessionId int) (*MemberInfo, error) {
+func (client *BucketClient) AdminGetSessionLeader(ctx context.Context, sessionId int,
+	opts ...RequestOption) (*MemberInfo, error) {
 	resource := fmt.Sprintf("/_/raft_sessions/%d/leader", sessionId)
-	responseBody, err := client.Request(ctx, "AdminGetSessionLeader", "GET", resource)
+	responseBody, err := client.Request(ctx, "AdminGetSessionLeader", "GET", resource, opts...)
 	if err != nil {
 		return nil, err
 	}

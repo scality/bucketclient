@@ -638,9 +638,9 @@ arraybuffer.prototype.slice@^1.0.4:
     get-intrinsic "^1.2.6"
     is-array-buffer "^3.0.4"
 
-"arsenal@git+https://github.com/scality/Arsenal#5fa6ecab848f1ef10acb20cce616d59c50ae5555":
+"arsenal@git+https://github.com/scality/Arsenal#8.2.0":
   version "8.2.0"
-  resolved "git+https://github.com/scality/Arsenal#5fa6ecab848f1ef10acb20cce616d59c50ae5555"
+  resolved "git+https://github.com/scality/Arsenal#2be07f2efbfca0246909cb9837c7149123bba4db"
   dependencies:
     "@azure/identity" "^4.5.0"
     "@azure/storage-blob" "^12.25.0"
@@ -1880,7 +1880,6 @@ http-proxy-agent@^7.0.0:
 
 "httpagent@git+https://github.com/scality/httpagent#1.0.6":
   version "1.0.6"
-  uid "66e97ab93532d79dbddcf6c4ea4df849b84c33c9"
   resolved "git+https://github.com/scality/httpagent#66e97ab93532d79dbddcf6c4ea4df849b84c33c9"
   dependencies:
     agentkeepalive "^4.2.1"

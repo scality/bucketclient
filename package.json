@@ -7,12 +7,12 @@
   "description": "Bucket Client",
   "main": "index.js",
   "files": [
-      "CONTRIBUTING.md",
-      "config.json",
-      "index.d.ts",
-      "lib/*",
-      "licenses/*",
-      "yarn.lock"
+    "CONTRIBUTING.md",
+    "config.json",
+    "index.d.ts",
+    "lib/*",
+    "licenses/*",
+    "yarn.lock"
   ],
   "scripts": {
     "ft_test": "mocha tests/functional",
@@ -41,7 +41,7 @@
     "mocha": ""
   },
   "dependencies": {
-    "arsenal": "git+https://github.com/scality/Arsenal#8.1.87",
+    "arsenal": "git+https://github.com/scality/arsenal#41e0675c9aa9882fe71a0976b03ef64e3785fe23",
     "httpagent": "git+https://github.com/scality/httpagent#1.0.5",
     "werelogs": "scality/werelogs#8.1.2"
   }

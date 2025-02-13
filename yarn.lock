@@ -573,9 +573,9 @@ argparse@^2.0.1:
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
-"arsenal@git+https://github.com/scality/arsenal#41e0675c9aa9882fe71a0976b03ef64e3785fe23":
-  version "8.2.1"
-  resolved "git+https://github.com/scality/arsenal#41e0675c9aa9882fe71a0976b03ef64e3785fe23"
+"arsenal@git+https://github.com/scality/arsenal#c46bc2a1fd7cba334a4681758ce21c8065eba5ef":
+  version "8.2.2"
+  resolved "git+https://github.com/scality/arsenal#c46bc2a1fd7cba334a4681758ce21c8065eba5ef"
   dependencies:
     "@azure/identity" "^4.5.0"
     "@azure/storage-blob" "^12.25.0"
@@ -594,7 +594,7 @@ argparse@^2.0.1:
     bson "^6.8.0"
     debug "^4.3.7"
     diskusage "^1.2.0"
-    fcntl "github:scality/node-fcntl#fead179c11f35c5a435c6057b672311821f08b60"
+    fcntl "github:scality/node-fcntl#169e2e5df7a24807ee4abde1bb78c304dfc47142"
     hdclient scality/hdclient#1.1.7
     httpagent scality/httpagent#1.1.0
     https-proxy-agent "^7.0.5"
@@ -1473,9 +1473,9 @@ fast-xml-parser@^4.4.1:
   dependencies:
     strnum "^1.0.5"
 
-"fcntl@github:scality/node-fcntl#fead179c11f35c5a435c6057b672311821f08b60":
-  version "0.2.1"
-  resolved "https://codeload.github.com/scality/node-fcntl/tar.gz/fead179c11f35c5a435c6057b672311821f08b60"
+"fcntl@github:scality/node-fcntl#169e2e5df7a24807ee4abde1bb78c304dfc47142":
+  version "0.2.2"
+  resolved "https://codeload.github.com/scality/node-fcntl/tar.gz/169e2e5df7a24807ee4abde1bb78c304dfc47142"
   dependencies:
     bindings "^1.1.1"
     node-addon-api "^8.3.0"

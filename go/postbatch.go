@@ -6,10 +6,15 @@ import (
 	"fmt"
 )
 
+type Overhead struct {
+	InternalOp bool `json:"internalOp"`
+}
+
 type PostBatchEntry struct {
-	Key   string `json:"key"`
-	Value string `json:"value,omitempty"`
-	Type  string `json:"type,omitempty"`
+	Key      string    `json:"key"`
+	Value    string    `json:"value,omitempty"`
+	Overhead *Overhead `json:"overhead,omitempty"`
+	Type     string    `json:"type,omitempty"`
 }
 
 func (client *BucketClient) PostBatch(ctx context.Context,

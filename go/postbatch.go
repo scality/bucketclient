@@ -24,6 +24,7 @@ func (client *BucketClient) PostBatch(ctx context.Context,
 		Batch []PostBatchEntry `json:"batch"`
 	}{Batch: batch}
 	postBody, err := json.Marshal(postPayload)
+	fmt.Println("marshal", postBody, err)
 	if err != nil {
 		return &BucketClientError{
 			"PostBatch", "POST", client.Endpoint, resource, 0, "",
@@ -38,5 +39,6 @@ func (client *BucketClient) PostBatch(ctx context.Context,
 			// the database, the request is idempotent.
 			RequestIdempotent,
 		}, opts...)...)
+	fmt.Println("postbatch", err)
 	return err
 }

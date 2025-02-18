@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/scality/bucketclient/go"
+	bucketclient "github.com/scality/bucketclient/go"
 )
 
 var _ = Describe("PostBatch()", func() {
@@ -18,7 +18,7 @@ var _ = Describe("PostBatch()", func() {
 			func(req *http.Request) (*http.Response, error) {
 				defer req.Body.Close()
 				Expect(io.ReadAll(req.Body)).To(Equal(
-					[]byte(`{"batch":[{"key":"foo","value":"{}"},{"key":"bar","type":"del"}]}`)))
+					[]byte(`{"batch":[{"key":"foo","value":"{}"},{"key":"bar","type":"del"},{"key":"foo","value":"{}","overhead":{"internalOp":true}}]}`)))
 
 				contentType, hasHeader := req.Header["Content-Type"]
 				Expect(hasHeader).To(BeTrue())
@@ -31,6 +31,7 @@ var _ = Describe("PostBatch()", func() {
 		Expect(client.PostBatch(ctx, "somebucket", []bucketclient.PostBatchEntry{
 			{Key: "foo", Value: "{}"},
 			{Key: "bar", Type: "del"},
+			{Key: "foo", Value: "{}", Overhead: &bucketclient.Overhead{InternalOp: true}},
 		})).To(Succeed())
 	})
 })

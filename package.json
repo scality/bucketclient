@@ -3,7 +3,7 @@
   "engines": {
     "node": ">=16"
   },
-  "version": "7.10.16",
+  "version": "7.10.17",
   "description": "Bucket Client",
   "main": "index.js",
   "files": [

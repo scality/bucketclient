@@ -44,6 +44,6 @@
   "dependencies": {
     "arsenal": "git+https://github.com/scality/Arsenal#8.2.4",
     "httpagent": "git+https://github.com/scality/httpagent#1.1.0",
-    "werelogs": "scality/werelogs#8.1.5"
+    "werelogs": "scality/werelogs#8.2.2"
   }
 }

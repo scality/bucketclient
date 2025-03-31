@@ -34,7 +34,7 @@ declare module 'bucketclient' {
         getRaftBuckets(raftId: string, reqUids: string[], callback: Callback, reqLogger: any): void;
         getBucketInformation(bucketName: string, reqUids: string[], callback: Callback, reqLogger: any): void;
         execBatch(bucketName: string, batch: Array<BatchOperation>, reqUids: string[], callback: Callback, reqLogger: any): void;
-        appendToLog(bucketName: string, batch: Array<BatchOperation>, reqUids: string[], callback: Callback, reqLogger: any): void;
+        appendToLog(bucketName: string, batch: Array<BatchOperation>, raftsession: string, reqUids: string[], callback: Callback, reqLogger: any): void;
         healthcheck(log: any, callback: Callback): void;
         livecheck(log: any, callback: Callback): void;
         private endRespond(res: any, ret: any, log: any, callback: Callback): void;

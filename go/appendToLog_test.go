@@ -30,6 +30,28 @@ var _ = Describe("AppendToLog()", func() {
 
 		Expect(client.AppendToLog(ctx, "somebucket", []bucketclient.AppendToLogEntry{
 			{Type: "append", Value: "{}"},
-		})).To(Succeed())
+		}, nil)).To(Succeed())
+	})
+
+	It("POSTs a batch to bucketd's appendToLog route", func(ctx SpecContext) {
+		httpmock.RegisterResponder(
+			"POST", "http://localhost:9000/default/appendToLog/somebucket?raftsession=4",
+			func(req *http.Request) (*http.Response, error) {
+				defer req.Body.Close()
+				Expect(io.ReadAll(req.Body)).To(Equal(
+					[]byte(`{"batch":[{"type":"append","value":"{}"}]}`)))
+
+				contentType, hasHeader := req.Header["Content-Type"]
+				Expect(hasHeader).To(BeTrue())
+				Expect(contentType).To(Equal([]string{"application/json"}))
+
+				return httpmock.NewStringResponse(200, "got it"), nil
+			},
+		)
+
+		raftsession := "4"
+		Expect(client.AppendToLog(ctx, "somebucket", []bucketclient.AppendToLogEntry{
+			{Type: "append", Value: "{}"},
+		}, &raftsession)).To(Succeed())
 	})
 })

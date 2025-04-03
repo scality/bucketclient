@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/url"
 )
 
 type AppendToLogEntry struct {
@@ -14,8 +15,18 @@ type AppendToLogEntry struct {
 }
 
 func (client *BucketClient) AppendToLog(ctx context.Context,
-	bucketName string, batch []AppendToLogEntry, opts ...RequestOption) error {
+	bucketName string, batch []AppendToLogEntry, sessionId *string, opts ...RequestOption) error {
 	resource := fmt.Sprintf("/default/appendToLog/%s", bucketName)
+	query := url.Values{}
+
+	if sessionId != nil && *sessionId != "" {
+		query.Set("raftsession", *sessionId)
+	}
+
+	u, _ := url.Parse(resource)
+	u.RawQuery = query.Encode()
+	resource = u.String()
+
 	postPayload := struct {
 		Batch []AppendToLogEntry `json:"batch"`
 	}{Batch: batch}

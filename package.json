@@ -3,16 +3,16 @@
   "engines": {
     "node": ">=16"
   },
-  "version": "8.1.12",
+  "version": "8.1.13",
   "description": "Bucket Client",
   "main": "index.js",
   "files": [
-      "CONTRIBUTING.md",
-      "config.json",
-      "index.d.ts",
-      "lib/*",
-      "licenses/*",
-      "yarn.lock"
+    "CONTRIBUTING.md",
+    "config.json",
+    "index.d.ts",
+    "lib/*",
+    "licenses/*",
+    "yarn.lock"
   ],
   "scripts": {
     "ft_test": "mocha tests/functional",
@@ -38,7 +38,8 @@
     "eslint-config-airbnb": "^6.0.0",
     "eslint-config-scality": "scality/Guidelines#ec33dfb",
     "eslint-plugin-react": "4.2.3",
-    "mocha": ""
+    "mocha": "",
+    "sinon": "^20.0.0"
   },
   "dependencies": {
     "arsenal": "git+https://github.com/scality/Arsenal#8.1.87",

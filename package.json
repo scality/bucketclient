@@ -3,7 +3,7 @@
   "engines": {
     "node": ">=20"
   },
-  "version": "8.2.2",
+  "version": "8.2.3",
   "description": "Bucket Client",
   "main": "index.js",
   "files": [
@@ -39,7 +39,8 @@
     "eslint-config-scality": "scality/Guidelines#8.3.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "7.37.2",
-    "mocha": "10.8.2"
+    "mocha": "10.8.2",
+    "sinon": "^20.0.0"
   },
   "dependencies": {
     "arsenal": "git+https://github.com/scality/Arsenal#8.2.4",

@@ -1,9 +1,11 @@
 'use strict';  
 
 const assert = require('assert');
+const { EventEmitter } = require('events');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
+const sinon = require('sinon');
 
 const RESTClient = require('../../index').RESTClient;
 
@@ -218,5 +220,57 @@ Object.keys(env).forEach(key => {
                 return done();
             });
         });
+    });
+});
+
+describe('with a stubbed http.request', () => {
+    let httpRequestStub;
+    let client;
+
+    beforeEach(() => {
+        httpRequestStub = sinon.stub(http, 'request');
+        client = new RESTClient(['bucketclient.testing.local:9000']);
+    });
+
+    afterEach(() => {
+        httpRequestStub.restore();
+        client.agent.destroy();
+    });
+
+    it('should call callback only once if HTTP request stream emits multiple errors', () => {
+        const mockRequest = new EventEmitter();
+        mockRequest.setNoDelay = () => {};
+        mockRequest.end = () => {
+            // emit two errors on the request stream
+            mockRequest.emit('error', new Error('first error'));
+            mockRequest.emit('error', new Error('second error'));
+        };
+        httpRequestStub.callsFake(() => mockRequest);
+
+        const callbackSpy = sinon.spy();
+        client.getObject('foobucket', 'fookey', '', callbackSpy);
+        assert.strictEqual(callbackSpy.callCount, 1);
+        assert.strictEqual(callbackSpy.getCall(0).args[0].code, 500);
+    });
+
+    it('should call callback only once if HTTP response stream emits multiple errors', () => {
+        const mockResponse = new EventEmitter();
+        mockResponse.statusCode = 200;
+
+        const mockRequest = new EventEmitter();
+        mockRequest.setNoDelay = () => {};
+        mockRequest.end = () => {
+            mockRequest.emit('response', mockResponse);
+
+            // emit two errors on the response stream
+            mockResponse.emit('error', new Error('first error'));
+            mockResponse.emit('error', new Error('second error'));
+        };
+        httpRequestStub.callsFake(() => mockRequest);
+
+        const callbackSpy = sinon.spy();
+        client.getObject('foobucket', 'fookey', '', callbackSpy);
+        assert.strictEqual(callbackSpy.callCount, 1);
+        assert.strictEqual(callbackSpy.getCall(0).args[0].code, 500);
     });
 });

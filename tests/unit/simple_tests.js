@@ -1,6 +1,7 @@
 'use strict'; // eslint-disable-line strict
 
 const assert = require('assert');
+const async = require('async');
 const { EventEmitter } = require('events');
 const fs = require('fs');
 const http = require('http');
@@ -219,6 +220,22 @@ Object.keys(env).forEach(key => {
                 assert.deepStrictEqual(err, null);
                 return done();
             });
+        });
+
+        it('should be able to reuse a connection after an HTTP error status is received', done => {
+            async.timesSeries(
+                10,
+                (i, next) => client.getRaftInformation(nonExistBucket.name, reqUids, err => {
+                    assert(err.is.NoSuchBucket);
+                    // trigger the node.js event loop after each iteration, to let the HTTP module
+                    // a chance to cleanup the unique connection state and reuse it
+                    setTimeout(next, 10);
+                }),
+                () => {
+                    assert(client.agent.totalSocketCount === 1,
+                        `expected total socket count to be 1, got ${client.agent.totalSocketCount}`);
+                    done();
+                });
         });
     });
 });

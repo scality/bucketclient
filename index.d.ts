@@ -36,6 +36,7 @@ declare module 'bucketclient' {
         execBatch(bucketName: string, batch: Array<BatchOperation>, reqUids: string[], callback: Callback, reqLogger: any): void;
         appendToLog(bucketName: string, batch: Array<BatchOperation>, raftsession: string | null | undefined, reqUids: string[], callback: Callback, reqLogger: any): void;
         healthcheck(log: any, callback: Callback): void;
+        healthcheckSimple(log: any, callback: Callback): void;
         livecheck(log: any, callback: Callback): void;
         private endRespond(res: any, log: any, callback: Callback): void;
         private request(method: string, beginPath: string, log: any, params: any, data: any, callback: Callback): void;

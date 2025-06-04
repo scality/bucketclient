@@ -86,6 +86,8 @@ function handler(req, res) {
             return res.end(JSON.stringify(existBucket.bucketInformation));
         } else if (req.url === '/_/healthcheck') {
             makeResponse(res, 200, 'OK');
+        } else if (req.url === '/_/healthcheck/simple') {
+            makeResponse(res, 200, 'OK');
         } else {
             makeResponse(res, 404, 'NoSuchBucket');
         }
@@ -213,6 +215,15 @@ Object.keys(env).forEach(key => {
                 return done();
             });
         });
+
+        it('should return 200 on healthcheckSimple request', done => {
+            const log = e.c.createLogger();
+            client.healthcheckSimple(log, err => {
+                assert.deepStrictEqual(err, null);
+                return done();
+            });
+        });
+
 
         it('should return 200 on livecheck request', done => {
             const log = e.c.createLogger();

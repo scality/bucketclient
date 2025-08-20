@@ -184,7 +184,7 @@ var _ = Describe("BucketClient.Request()", func() {
 				"/default/bucket/somebucket/someobject")
 			duration := time.Since(startTime)
 
-			Expect(err).ToNot(BeNil())
+			Expect(err).To(HaveOccurred())
 			bcErr, isBCErr := err.(*bucketclient.BucketClientError)
 			Expect(isBCErr).To(BeTrue())
 			Expect(bcErr.StatusCode).To(Equal(0))
@@ -193,7 +193,7 @@ var _ = Describe("BucketClient.Request()", func() {
 			// I did not dig into it further but it makes it hard to properly test the
 			// properties about the returned error, so just checking that there is an
 			// error and that we didn't wait much more than the timeout.
-			Expect(ctx.Err()).To(BeNil())
+			Expect(ctx.Err()).To(Succeed())
 			Expect(duration).To(BeNumerically(">=", 900*time.Millisecond))
 			Expect(duration).To(BeNumerically("<=", 1100*time.Millisecond))
 		})

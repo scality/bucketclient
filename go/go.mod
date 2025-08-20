@@ -1,6 +1,6 @@
 module github.com/scality/bucketclient/go
 
-go 1.23.0
+go 1.24.2
 
 require (
 	github.com/jarcoal/httpmock v1.3.1

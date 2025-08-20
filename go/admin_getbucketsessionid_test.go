@@ -7,7 +7,7 @@ import (
 	"github.com/jarcoal/httpmock"
 )
 
-var _ = Describe("AdminGetBucketSessionId()", func() {
+var _ = Describe("AdminGetBucketSessionID()", func() {
 	It("return the raft session ID hosting a bucket", func(ctx SpecContext) {
 		httpmock.RegisterResponder(
 			"GET", "http://localhost:9000/_/buckets/my-bucket/id",

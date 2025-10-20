@@ -32,8 +32,14 @@ const existBucket = {
         },
     },
 };
+const existObject = {
+    name: 'testObject',
+    value: { key: 'value', metadata: 'test' },
+};
 const nonExistBucket = { name: 'Ford' };
 const reqUids = 'REQ1';
+
+let includeRaftSessionIdHeader = true;
 
 function makeResponse(res, code, message) {
     /* eslint-disable no-param-reassign */
@@ -77,7 +83,16 @@ function handler(req, res) {
     } else if (req.method === 'GET') {
         if (req.url === `/default/attributes/${existBucket.name}`) {
             makeResponse(res, 200, 'OK');
+            if (includeRaftSessionIdHeader) {
+                res.setHeader('x-scal-raft-session-id', existBucket.bucketInformation.raftSessionId);
+            }
             res.write(JSON.stringify(existBucket.value));
+        } else if (req.url === `/default/parallel/${existBucket.name}/${existObject.name}`) {
+            makeResponse(res, 200, 'OK');
+            if (includeRaftSessionIdHeader) {
+                res.setHeader('x-scal-raft-session-id', existBucket.bucketInformation.raftSessionId);
+            }
+            res.write(JSON.stringify(existObject.value));
         } else if (req.url === `/default/informations/${existBucket.name}`) {
             makeResponse(res, 200, 'OK');
             return res.end(JSON.stringify(existBucket.raftInformation));
@@ -108,6 +123,7 @@ Object.keys(env).forEach(key => {
         let client;
 
         beforeEach('start server', done => {
+            includeRaftSessionIdHeader = true;
             client = e.c;
             server = e.s(handler).on('error', done).listen(9000, done);
         });
@@ -139,6 +155,54 @@ Object.keys(env).forEach(key => {
                     const ret = JSON.parse(data);
                     assert.deepStrictEqual(ret, existBucket.value);
                     done(err);
+                });
+        });
+
+        it('should get an existing bucket with raftSessionId', done => {
+            includeRaftSessionIdHeader = true;
+            client.getBucketAttributes(existBucket.name, reqUids,
+                (err, data, raftSessionId) => {
+                    assert.ifError(err);
+                    const ret = JSON.parse(data);
+                    assert.deepStrictEqual(ret, existBucket.value);
+                    assert.strictEqual(raftSessionId, existBucket.bucketInformation.raftSessionId);
+                    done();
+                });
+        });
+
+        it('should get bucket attributes without raftSessionId when header absent', done => {
+            includeRaftSessionIdHeader = false;
+            client.getBucketAttributes(existBucket.name, reqUids,
+                (err, data, raftSessionId) => {
+                    assert.ifError(err);
+                    const ret = JSON.parse(data);
+                    assert.deepStrictEqual(ret, existBucket.value);
+                    assert.strictEqual(raftSessionId, undefined);
+                    done();
+                });
+        });
+
+        it('should get bucket and object with raftSessionId', done => {
+            includeRaftSessionIdHeader = true;
+            client.getBucketAndObject(existBucket.name, existObject.name, reqUids,
+                (err, data, raftSessionId) => {
+                    assert.ifError(err);
+                    const ret = JSON.parse(data);
+                    assert.deepStrictEqual(ret, existObject.value);
+                    assert.strictEqual(raftSessionId, existBucket.bucketInformation.raftSessionId);
+                    done();
+                });
+        });
+
+        it('should get bucket and object without raftSessionId when header absent', done => {
+            includeRaftSessionIdHeader = false;
+            client.getBucketAndObject(existBucket.name, existObject.name, reqUids,
+                (err, data, raftSessionId) => {
+                    assert.ifError(err);
+                    const ret = JSON.parse(data);
+                    assert.deepStrictEqual(ret, existObject.value);
+                    assert.strictEqual(raftSessionId, undefined);
+                    done();
                 });
         });
 

@@ -301,4 +301,50 @@ describe('with a stubbed http.request', () => {
         assert.strictEqual(callbackSpy.callCount, 1);
         assert.strictEqual(callbackSpy.getCall(0).args[0].code, 500);
     });
+
+    it('should return only body when returnHeaders is false', done => {
+        const mockResponse = new EventEmitter();
+        mockResponse.statusCode = 200;
+        mockResponse.headers = { 'x-scal-raft-session-id': '42' };
+
+        const mockRequest = new EventEmitter();
+        mockRequest.setNoDelay = () => {};
+        mockRequest.end = () => {
+            mockRequest.emit('response', mockResponse);
+            mockResponse.emit('data', Buffer.from('test body'));
+            mockResponse.emit('end');
+        };
+        httpRequestStub.callsFake(() => mockRequest);
+
+        const log = client.createLogger();
+        client.request('GET', '/test', log, null, null, (err, body, headers) => {
+            assert.ifError(err);
+            assert.strictEqual(body, 'test body');
+            assert.strictEqual(headers, undefined);
+            done();
+        }, false);
+    });
+
+    it('should return body and headers when returnHeaders is true', done => {
+        const mockResponse = new EventEmitter();
+        mockResponse.statusCode = 200;
+        mockResponse.headers = { 'x-scal-raft-session-id': '42' };
+
+        const mockRequest = new EventEmitter();
+        mockRequest.setNoDelay = () => {};
+        mockRequest.end = () => {
+            mockRequest.emit('response', mockResponse);
+            mockResponse.emit('data', Buffer.from('test body'));
+            mockResponse.emit('end');
+        };
+        httpRequestStub.callsFake(() => mockRequest);
+
+        const log = client.createLogger();
+        client.request('GET', '/test', log, null, null, (err, body, headers) => {
+            assert.ifError(err);
+            assert.strictEqual(body, 'test body');
+            assert.deepStrictEqual(headers, { 'x-scal-raft-session-id': '42' });
+            done();
+        }, true);
+    });
 });

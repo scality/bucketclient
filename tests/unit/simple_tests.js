@@ -36,7 +36,8 @@ const existObject = {
     name: 'testObject',
     value: { key: 'value', metadata: 'test' },
 };
-const nonExistBucket = { name: 'Ford' };
+const newBucketName = 'new-bucket';
+const newBucketNameWithRSID = 'new-bucket-with-rsid';
 const reqUids = 'REQ1';
 
 let includeRaftSessionIdHeader = true;
@@ -75,10 +76,14 @@ function handler(req, res) {
     if (req.method === 'POST') {
         if (req.url === `/default/bucket/${existBucket.name}`) {
             makeResponse(res, 409, 'BucketAlreadyExists');
-        } else if (req.url === `/default/bucket/${nonExistBucket.name}`) {
+        } else if (req.url === `/default/bucket/${newBucketName}`) {
+            makeResponse(res, 200, 'OK');
+        } else if (req.url === `/default/bucket/${newBucketNameWithRSID}?raftsession=2`) {
             makeResponse(res, 200, 'OK');
         } else if (req.url === '/_/livecheck') {
             makeResponse(res, 200, 'OK');
+        } else {
+            assert.fail(`unexpected POST url: ${req.url}`);
         }
     } else if (req.method === 'GET') {
         if (req.url === `/default/attributes/${existBucket.name}`) {
@@ -134,8 +139,13 @@ Object.keys(env).forEach(key => {
         });
 
         it('should create a new non-existing bucket', done => {
-            client.createBucket(nonExistBucket.name, reqUids,
-                '{ status: "dead" }', done);
+            client.createBucket(newBucketName, reqUids,
+                '{}', done);
+        });
+
+        it('should create a new non-existing bucket on a given RAFT session', done => {
+            client.createBucket(newBucketNameWithRSID, reqUids,
+                '{}', done, null, { raftsession: 2 });
         });
 
         it('should try to create an already existing bucket and fail', done => {
@@ -216,7 +226,7 @@ Object.keys(env).forEach(key => {
         });
 
         it('should get Raft informations on an unexisting bucket', done => {
-            client.getRaftInformation(nonExistBucket.name, reqUids,
+            client.getRaftInformation(newBucketName, reqUids,
                 err => {
                     assert(err.is.NoSuchBucket);
                     assert.strictEqual(err.isExpected, true);
@@ -235,7 +245,7 @@ Object.keys(env).forEach(key => {
         });
 
         it('should get Bucket informations on an unexisting bucket', done => {
-            client.getRaftInformation(nonExistBucket.name, reqUids,
+            client.getRaftInformation(newBucketName, reqUids,
                 err => {
                     assert(err.is.NoSuchBucket);
                     assert.strictEqual(err.isExpected, true);
@@ -245,7 +255,7 @@ Object.keys(env).forEach(key => {
         });
 
         it('should fetch non-existing bucket, sending back an error', done => {
-            client.getBucketAttributes(nonExistBucket.name, reqUids, err => {
+            client.getBucketAttributes(newBucketName, reqUids, err => {
                 if (err) {
                     assert(err.is.NoSuchBucket);
                     assert.strictEqual(err.isExpected, true);
@@ -261,7 +271,7 @@ Object.keys(env).forEach(key => {
         });
 
         it('should fetch non-existing bucket, sending back an error', done => {
-            client.deleteBucket(nonExistBucket.name, reqUids, err => {
+            client.deleteBucket(newBucketName, reqUids, err => {
                 if (err) {
                     assert(err.is.NoSuchBucket);
                     assert.strictEqual(err.isExpected, true);
@@ -300,7 +310,7 @@ Object.keys(env).forEach(key => {
         it('should be able to reuse a connection after an HTTP error status is received', done => {
             async.timesSeries(
                 10,
-                (i, next) => client.getRaftInformation(nonExistBucket.name, reqUids, err => {
+                (i, next) => client.getRaftInformation(newBucketName, reqUids, err => {
                     assert(err.is.NoSuchBucket);
                     // trigger the node.js event loop after each iteration, to let the HTTP module
                     // a chance to cleanup the unique connection state and reuse it

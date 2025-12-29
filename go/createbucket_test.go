@@ -38,6 +38,19 @@ var _ = Describe("CreateBucket()", func() {
 			bucketclient.CreateBucketSessionIdOption(12))).To(Succeed())
 	})
 
+	It("creates a bucket on raft session 0", func(ctx SpecContext) {
+		httpmock.RegisterResponder(
+			"POST", "/default/bucket/my-new-bucket?raftsession=0",
+			func(req *http.Request) (*http.Response, error) {
+				defer req.Body.Close()
+				Expect(io.ReadAll(req.Body)).To(Equal([]byte(`{"foo":"bar"}`)))
+				return httpmock.NewStringResponse(200, ""), nil
+			},
+		)
+		Expect(client.CreateBucket(ctx, "my-new-bucket", []byte(`{"foo":"bar"}`),
+			bucketclient.CreateBucketSessionIdOption(0))).To(Succeed())
+	})
+
 	It("forwards request error", func(ctx SpecContext) {
 		httpmock.RegisterResponder(
 			"POST", "/default/bucket/my-new-bucket",

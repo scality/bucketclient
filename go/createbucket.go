@@ -55,7 +55,7 @@ func (client *BucketClient) CreateBucket(ctx context.Context,
 	resource := fmt.Sprintf("/default/bucket/%s", bucketName)
 	query := url.Values{}
 
-	if parsedOpts.sessionId > 0 {
+	if parsedOpts.sessionId >= 0 {
 		query.Set("raftsession", strconv.Itoa(parsedOpts.sessionId))
 	}
 	u, _ := url.Parse(resource)

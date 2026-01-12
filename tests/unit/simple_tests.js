@@ -82,6 +82,13 @@ function handler(req, res) {
             makeResponse(res, 200, 'OK');
         } else if (req.url === '/_/livecheck') {
             makeResponse(res, 200, 'OK');
+        } else if (req.url === '/_/raft_sessions/12/backups/reindex?') {
+            makeResponse(res, 202, 'Accepted');
+        // The order of query params is deterministically defined by the order in which
+        // they are inserted by the RESTClient.reindexBackups method.
+        } else if (req.url === '/_/raft_sessions/12/backups/reindex?recreateBackups=&' +
+                   'formatVersion=2&compression=zstd&recreateMinBseq=10&recreateMaxBseq=20') {
+            makeResponse(res, 202, 'Accepted');
         } else {
             assert.fail(`unexpected POST url: ${req.url}`);
         }
@@ -108,12 +115,25 @@ function handler(req, res) {
             makeResponse(res, 200, 'OK');
         } else if (req.url === '/_/healthcheck/simple') {
             makeResponse(res, 200, 'OK');
+        } else if (req.url === '/_/raft_sessions/12/backups/reindex') {
+            makeResponse(res, 200, 'OK');
+            // example response, pruned of some of its contents for simplicity
+            res.write(JSON.stringify({
+                startTime: '2026-01-13T00:26:50.294Z',
+                status: 'running',
+                repd: {
+                    id: 22,
+                    name: 'md3-cluster1',
+                },
+            }));
         } else {
             makeResponse(res, 404, 'NoSuchBucket');
         }
     } else if (req.method === 'DELETE') {
         if (req.url === `/default/bucket/${existBucket.name}`) {
             makeResponse(res, 200, 'OK');
+        } else if (req.url === '/_/raft_sessions/12/backups/reindex') {
+            makeResponse(res, 204, 'No Content');
         } else {
             makeResponse(res, 404, 'NoSuchBucket');
         }
@@ -321,6 +341,51 @@ Object.keys(env).forEach(key => {
                         `expected total socket count to be 1, got ${client.agent.totalSocketCount}`);
                     done();
                 });
+        });
+
+        it('backup re-index: start job without re-create', done => {
+            const log = e.c.createLogger();
+            client.reindexBackups(12, null, reqUids, err => {
+                assert.ifError(err);
+                return done();
+            }, log);
+        });
+
+        it('backup re-index: start job with re-create params', done => {
+            const log = e.c.createLogger();
+            client.reindexBackups(12, {
+                formatVersion: 2,
+                compression: 'zstd',
+                recreateMinBseq: 10,
+                recreateMaxBseq: 20,
+            }, reqUids, err => {
+                assert.ifError(err);
+                return done();
+            }, log);
+        });
+
+        it('backup re-index: get job status', done => {
+            const log = e.c.createLogger();
+            client.getBackupReindexJobStatus(12, reqUids, (err, jobStatus) => {
+                assert.ifError(err);
+                assert.deepStrictEqual(jobStatus, {
+                    startTime: '2026-01-13T00:26:50.294Z',
+                    status: 'running',
+                    repd: {
+                        id: 22,
+                        name: 'md3-cluster1',
+                    },
+                });
+                return done();
+            }, log);
+        });
+
+        it('backup re-index: abort job', done => {
+            const log = e.c.createLogger();
+            client.abortBackupReindexJob(12, reqUids, err => {
+                assert.ifError(err);
+                return done();
+            }, log);
         });
     });
 });

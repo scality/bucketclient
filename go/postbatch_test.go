@@ -31,7 +31,7 @@ var _ = Describe("PostBatch()", func() {
 		Expect(client.PostBatch(ctx, "somebucket", []bucketclient.PostBatchEntry{
 			{Key: "foo", Value: "{}"},
 			{Key: "bar", Type: "del"},
-			{Key: "foo", Value: "{}", Overhead: &bucketclient.Overhead{InternalOp: true}},
+			{Key: "foo", Value: "{}", Overhead: map[string]interface{}{"internalOp": true}},
 		})).To(Succeed())
 	})
 })

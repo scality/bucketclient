@@ -30,9 +30,10 @@ type SessionLogRecord struct {
 }
 
 type SessionLogEntry struct {
-	Key   string `json:"key,omitempty"`
-	Value string `json:"value,omitempty"`
-	Type  string `json:"type,omitempty"`
+	Key      string   `json:"key,omitempty"`
+	Value    string   `json:"value,omitempty"`
+	Type     string   `json:"type,omitempty"`
+	Overhead Overhead `json:"overhead,omitempty"`
 }
 
 type BucketAccessMode string

@@ -8,10 +8,10 @@ import (
 )
 
 type AppendToLogEntry struct {
-	Type     string    `json:"type"`
-	Key      string    `json:"key,omitempty"`
-	Value    string    `json:"value,omitempty"`
-	Overhead *Overhead `json:"overhead,omitempty"`
+	Type     string   `json:"type"`
+	Key      string   `json:"key,omitempty"`
+	Value    string   `json:"value,omitempty"`
+	Overhead Overhead `json:"overhead,omitempty"`
 }
 
 func (client *BucketClient) AppendToLog(ctx context.Context,

@@ -40,7 +40,7 @@
     "arsenal": "git+https://github.com/scality/Arsenal#8.5.17",
     "eslint": "^9.14.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-scality": "scality/Guidelines#8.3.0",
+    "eslint-config-scality": "scality/Guidelines#8.3.3",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "7.37.2",
     "mocha": "10.8.2",

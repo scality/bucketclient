@@ -38,13 +38,13 @@
   },
   "devDependencies": {
     "arsenal": "git+https://github.com/scality/Arsenal#8.5.17",
-    "eslint": "^9.14.0",
+    "eslint": "^9.39.5",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-scality": "scality/Guidelines#8.3.3",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-react": "7.37.2",
-    "mocha": "10.8.2",
-    "sinon": "^20.0.0"
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-react": "7.37.5",
+    "mocha": "11.8.0",
+    "sinon": "^22.0.0"
   },
   "dependencies": {
     "httpagent": "git+https://github.com/scality/httpagent#1.1.0",

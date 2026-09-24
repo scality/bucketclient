@@ -34,10 +34,10 @@
   },
   "homepage": "https://github.com/scality/bucketclient#readme",
   "peerDependencies": {
-    "arsenal": "^8.2.4"
+    "@scality/arsenal": "^8.6.0-0"
   },
   "devDependencies": {
-    "arsenal": "git+https://github.com/scality/Arsenal#8.5.17",
+    "@scality/arsenal": "^8.6.0-0",
     "eslint": "^9.39.5",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-scality": "scality/Guidelines#8.3.3",

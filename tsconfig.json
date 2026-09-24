@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "es2022",
+    "moduleResolution": "node"
+  },
+  "files": ["index.d.ts"]
+}

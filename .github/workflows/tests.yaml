@@ -28,6 +28,9 @@ jobs:
       - name: run lint
         run: yarn run --silent lint -- --max-warnings 0
 
+      - name: check type declarations
+        run: yarn run --silent types
+
       - name: set host bucketclient.testing.local
         run: sudo bash -c 'echo "127.0.0.1 bucketclient.testing.local" >> /etc/hosts'
 

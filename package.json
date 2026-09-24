@@ -38,9 +38,9 @@
   },
   "devDependencies": {
     "@scality/arsenal": "^8.6.0-0",
+    "@scality/eslint-config-scality": "scality/Guidelines#8.3.3",
     "eslint": "^9.39.5",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-scality": "scality/Guidelines#8.3.3",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "7.37.5",
     "mocha": "11.8.0",

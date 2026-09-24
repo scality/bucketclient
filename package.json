@@ -1,5 +1,5 @@
 {
-  "name": "bucketclient",
+  "name": "@scality/bucketclient",
   "engines": {
     "node": ">=22"
   },

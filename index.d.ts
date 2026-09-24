@@ -6,7 +6,7 @@ declare type BatchOperation = {
     value?: string,
 };
 
-declare module 'bucketclient' {
+declare module '@scality/bucketclient' {
     export class RESTClient {
         constructor(
             host: string | string[],

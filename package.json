@@ -42,7 +42,7 @@
   "devDependencies": {
     "@scality/arsenal": "^8.6.0-0",
     "@scality/eslint-config-scality": "scality/Guidelines#8.4.0",
-    "eslint": "^9.39.5",
+    "eslint": "^10.15.0",
     "eslint-plugin-mocha": "^11.3.0",
     "mocha": "11.8.0",
     "prettier": "^3.10.1",

@@ -290,7 +290,7 @@ Object.keys(env).forEach(key => {
             client.deleteBucket(existBucket.name, reqUids, done);
         });
 
-        it('should fetch non-existing bucket, sending back an error', done => {
+        it('should fail to delete a non-existing bucket, sending back an error', done => {
             client.deleteBucket(newBucketName, reqUids, err => {
                 if (err) {
                     assert(err.is.NoSuchBucket);

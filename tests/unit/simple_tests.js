@@ -84,10 +84,10 @@ function handler(req, res) {
             makeResponse(res, 200, 'OK');
         } else if (req.url === '/_/raft_sessions/12/backups/reindex?') {
             makeResponse(res, 202, 'Accepted');
-        // The order of query params is deterministically defined by the order in which
-        // they are inserted by the RESTClient.reindexBackups method.
         } else if (req.url === '/_/raft_sessions/12/backups/reindex?recreateBackups=&' +
                    'formatVersion=2&compression=zstd&recreateMinBseq=10&recreateMaxBseq=20') {
+            // The order of query params is deterministically defined by the order in which
+            // they are inserted by the RESTClient.reindexBackups method.
             makeResponse(res, 202, 'Accepted');
         } else {
             assert.fail(`unexpected POST url: ${req.url}`);

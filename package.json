@@ -17,6 +17,7 @@
   "scripts": {
     "ft_test": "mocha tests/functional",
     "lint": "eslint $(git ls-files '*.js')",
+    "prettier:check": "prettier --check .",
     "test": "mocha tests/unit",
     "types": "tsc"
   },
@@ -43,6 +44,7 @@
     "eslint": "^9.39.5",
     "eslint-plugin-mocha": "^11.3.0",
     "mocha": "11.8.0",
+    "prettier": "^3.10.1",
     "sinon": "^22.0.0",
     "typescript": "^5.9.3"
   },

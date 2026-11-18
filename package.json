@@ -1,55 +1,56 @@
 {
-  "name": "@scality/bucketclient",
-  "engines": {
-    "node": ">=22"
-  },
-  "version": "8.3.0",
-  "description": "Bucket Client",
-  "main": "index.js",
-  "files": [
-    "CONTRIBUTING.md",
-    "config.json",
-    "index.d.ts",
-    "lib/*",
-    "licenses/*",
-    "yarn.lock"
-  ],
-  "scripts": {
-    "ft_test": "mocha tests/functional",
-    "lint": "eslint $(git ls-files '*.js')",
-    "test": "mocha tests/unit",
-    "types": "tsc"
-  },
-  "bin": {
-    "shell": "bin/shell.js"
-  },
-  "repository": "scality/bucketclient",
-  "keywords": [
-    "dbd",
-    "raft"
-  ],
-  "author": "Giorgio Regni",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/scality/bucketclient/issues"
-  },
-  "homepage": "https://github.com/scality/bucketclient#readme",
-  "peerDependencies": {
-    "@scality/arsenal": "^8.6.0-0"
-  },
-  "devDependencies": {
-    "@scality/arsenal": "^8.6.0-0",
-    "@scality/eslint-config-scality": "scality/Guidelines#8.3.3",
-    "eslint": "^9.39.5",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-react": "7.37.5",
-    "mocha": "11.8.0",
-    "sinon": "^22.0.0",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "httpagent": "git+https://github.com/scality/httpagent#1.1.0",
-    "werelogs": "scality/werelogs#8.2.2"
-  }
+    "name": "@scality/bucketclient",
+    "engines": {
+        "node": ">=22"
+    },
+    "version": "8.3.0",
+    "description": "Bucket Client",
+    "main": "index.js",
+    "files": [
+        "CONTRIBUTING.md",
+        "config.json",
+        "index.d.ts",
+        "lib/*",
+        "licenses/*",
+        "yarn.lock"
+    ],
+    "scripts": {
+        "ft_test": "mocha tests/functional",
+        "lint": "eslint $(git ls-files '*.js' '*.mjs')",
+        "lint_md": "mdlint $(git ls-files '*.md')",
+        "prettier:check": "prettier --check .",
+        "test": "mocha tests/unit",
+        "types": "tsc"
+    },
+    "bin": {
+        "shell": "bin/shell.js"
+    },
+    "repository": "scality/bucketclient",
+    "keywords": [
+        "dbd",
+        "raft"
+    ],
+    "author": "Giorgio Regni",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/scality/bucketclient/issues"
+    },
+    "homepage": "https://github.com/scality/bucketclient#readme",
+    "peerDependencies": {
+        "@scality/arsenal": "^8.6.0-0"
+    },
+    "devDependencies": {
+        "@scality/arsenal": "^8.6.0-0",
+        "@scality/eslint-config-scality": "scality/Guidelines#8.4.0",
+        "eslint": "^10.15.0",
+        "eslint-plugin-mocha": "^11.3.0",
+        "mocha": "11.8.0",
+        "prettier": "^3.10.1",
+        "sinon": "^22.0.0",
+        "typescript": "^5.9.3"
+    },
+    "dependencies": {
+        "httpagent": "git+https://github.com/scality/httpagent#1.1.0",
+        "werelogs": "scality/werelogs#8.2.2"
+    }
 }

@@ -1,4 +1,4 @@
-'use strict';  
+'use strict';
 
 const assert = require('assert');
 
@@ -17,23 +17,18 @@ describe('Bucket Client tests', function testClient() {
     });
 
     it('should create a new bucket', done => {
-        client.createBucket(bucketName, reqUids,
-            JSON.stringify(bucketAttributes), done);
+        client.createBucket(bucketName, reqUids, JSON.stringify(bucketAttributes), done);
     });
 
     it('should try to create the same bucket and fail', done => {
-        client.createBucket(
-            bucketName,
-            reqUids,
-            JSON.stringify(bucketAttributes),
-            err => {
-                if (err) {
-                    assert(err.is.BucketAlreadyExists);
-                    assert.strictEqual(err.isExpected, true);
-                    return done();
-                }
-                return done('Did not fail as expected');
-            });
+        client.createBucket(bucketName, reqUids, JSON.stringify(bucketAttributes), err => {
+            if (err) {
+                assert(err.is.BucketAlreadyExists);
+                assert.strictEqual(err.isExpected, true);
+                return done();
+            }
+            return done('Did not fail as expected');
+        });
     });
     it('should get the created bucket', done => {
         client.getBucketAttributes(bucketName, reqUids, (err, data) => {
@@ -68,14 +63,13 @@ describe('Bucket Client tests', function testClient() {
             const rafts = JSON.parse(msg);
             assert.strictEqual(Array.isArray(rafts), true);
             assert.strictEqual(rafts.length >= 1, true);
-            assert.strictEqual(rafts.every(raft =>
-                typeof raft.id === 'number' &&
-                Array.isArray(raft.raftMembers)
-            ), true);
+            assert.strictEqual(
+                rafts.every(raft => typeof raft.id === 'number' && Array.isArray(raft.raftMembers)),
+                true,
+            );
             return done();
         });
     });
-
 
     it('should get logs from bucketd', done => {
         const start = 1;
@@ -86,33 +80,37 @@ describe('Bucket Client tests', function testClient() {
             }
             const dataBufs = [];
             let dataLen = 0;
-            stream.on('data', data => {
-                dataBufs.push(data);
-                dataLen += data.length;
-            }).on('error', done)
+            stream
+                .on('data', data => {
+                    dataBufs.push(data);
+                    dataLen += data.length;
+                })
+                .on('error', done)
                 .on('end', () => {
                     const data = Buffer.concat(dataBufs, dataLen).toString();
                     const obj = JSON.parse(data);
-                    assert.strictEqual(Object.prototype.hasOwnProperty.call(
-                        obj, 'info'), true);
+                    assert.strictEqual(Object.prototype.hasOwnProperty.call(obj, 'info'), true);
                     const info = obj.info;
-                    assert.strictEqual(['start', 'end', 'cseq', 'prune']
-                        .every(key => Object.prototype.hasOwnProperty.call(
-                            obj.info, key)), true);
+                    assert.strictEqual(
+                        ['start', 'end', 'cseq', 'prune'].every(key =>
+                            Object.prototype.hasOwnProperty.call(obj.info, key),
+                        ),
+                        true,
+                    );
                     assert.strictEqual(info.start >= start, true);
                     assert.strictEqual(info.end <= end, true);
                     // NOTE: this check will be removed when pruned logs are
                     // retrieved also
                     assert.strictEqual(info.prune <= info.start, true);
                     assert.strictEqual(info.cseq >= info.end, true);
-                    assert.strictEqual(Object.prototype.hasOwnProperty.call(
-                        obj, 'log'), true);
+                    assert.strictEqual(Object.prototype.hasOwnProperty.call(obj, 'log'), true);
                     const logs = obj.log;
                     assert.strictEqual(Array.isArray(logs), true);
                     assert.strictEqual(logs.length >= 1, true);
-                    assert.strictEqual(logs.every(log =>
-                        (typeof log === 'object') && (Object.keys(log).length > 0)
-                    ), true);
+                    assert.strictEqual(
+                        logs.every(log => typeof log === 'object' && Object.keys(log).length > 0),
+                        true,
+                    );
                     return done();
                 });
             return undefined;

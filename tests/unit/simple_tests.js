@@ -1,4 +1,4 @@
-'use strict';  
+'use strict';
 
 const assert = require('assert');
 const async = require('async');
@@ -63,12 +63,14 @@ const env = {
     },
     https: {
         s: handler => https.createServer(httpsOptions, handler),
-        c: new RESTClient(['bucketclient.testing.local:9000'],
+        c: new RESTClient(
+            ['bucketclient.testing.local:9000'],
             undefined,
             true,
             httpsOptions.key,
             httpsOptions.cert,
-            httpsOptions.ca[0]),
+            httpsOptions.ca[0],
+        ),
     },
 };
 
@@ -84,10 +86,13 @@ function handler(req, res) {
             makeResponse(res, 200, 'OK');
         } else if (req.url === '/_/raft_sessions/12/backups/reindex?') {
             makeResponse(res, 202, 'Accepted');
-        // The order of query params is deterministically defined by the order in which
-        // they are inserted by the RESTClient.reindexBackups method.
-        } else if (req.url === '/_/raft_sessions/12/backups/reindex?recreateBackups=&' +
-                   'formatVersion=2&compression=zstd&recreateMinBseq=10&recreateMaxBseq=20') {
+        } else if (
+            req.url ===
+            '/_/raft_sessions/12/backups/reindex?recreateBackups=&' +
+                'formatVersion=2&compression=zstd&recreateMinBseq=10&recreateMaxBseq=20'
+        ) {
+            // The order of query params is deterministically defined by the order in which
+            // they are inserted by the RESTClient.reindexBackups method.
             makeResponse(res, 202, 'Accepted');
         } else {
             assert.fail(`unexpected POST url: ${req.url}`);
@@ -118,14 +123,16 @@ function handler(req, res) {
         } else if (req.url === '/_/raft_sessions/12/backups/reindex') {
             makeResponse(res, 200, 'OK');
             // example response, pruned of some of its contents for simplicity
-            res.write(JSON.stringify({
-                startTime: '2026-01-13T00:26:50.294Z',
-                status: 'running',
-                repd: {
-                    id: 22,
-                    name: 'md3-cluster1',
-                },
-            }));
+            res.write(
+                JSON.stringify({
+                    startTime: '2026-01-13T00:26:50.294Z',
+                    status: 'running',
+                    repd: {
+                        id: 22,
+                        name: 'md3-cluster1',
+                    },
+                }),
+            );
         } else {
             makeResponse(res, 404, 'NoSuchBucket');
         }
@@ -159,13 +166,11 @@ Object.keys(env).forEach(key => {
         });
 
         it('should create a new non-existing bucket', done => {
-            client.createBucket(newBucketName, reqUids,
-                '{}', done);
+            client.createBucket(newBucketName, reqUids, '{}', done);
         });
 
         it('should create a new non-existing bucket on a given RAFT session', done => {
-            client.createBucket(newBucketNameWithRSID, reqUids,
-                '{}', done, null, { raftsession: 2 });
+            client.createBucket(newBucketNameWithRSID, reqUids, '{}', done, null, { raftsession: 2 });
         });
 
         it('should try to create an already existing bucket and fail', done => {
@@ -180,98 +185,89 @@ Object.keys(env).forEach(key => {
         });
 
         it('should get an existing bucket', done => {
-            client.getBucketAttributes(existBucket.name, reqUids,
-                (err, data) => {
-                    const ret = JSON.parse(data);
-                    assert.deepStrictEqual(ret, existBucket.value);
-                    done(err);
-                });
+            client.getBucketAttributes(existBucket.name, reqUids, (err, data) => {
+                const ret = JSON.parse(data);
+                assert.deepStrictEqual(ret, existBucket.value);
+                done(err);
+            });
         });
 
         it('should get an existing bucket with raftSessionId', done => {
             includeRaftSessionIdHeader = true;
-            client.getBucketAttributes(existBucket.name, reqUids,
-                (err, data, raftSessionId) => {
-                    assert.ifError(err);
-                    const ret = JSON.parse(data);
-                    assert.deepStrictEqual(ret, existBucket.value);
-                    assert.strictEqual(raftSessionId, existBucket.bucketInformation.raftSessionId);
-                    done();
-                });
+            client.getBucketAttributes(existBucket.name, reqUids, (err, data, raftSessionId) => {
+                assert.ifError(err);
+                const ret = JSON.parse(data);
+                assert.deepStrictEqual(ret, existBucket.value);
+                assert.strictEqual(raftSessionId, existBucket.bucketInformation.raftSessionId);
+                done();
+            });
         });
 
         it('should get bucket attributes without raftSessionId when header absent', done => {
             includeRaftSessionIdHeader = false;
-            client.getBucketAttributes(existBucket.name, reqUids,
-                (err, data, raftSessionId) => {
-                    assert.ifError(err);
-                    const ret = JSON.parse(data);
-                    assert.deepStrictEqual(ret, existBucket.value);
-                    assert.strictEqual(raftSessionId, undefined);
-                    done();
-                });
+            client.getBucketAttributes(existBucket.name, reqUids, (err, data, raftSessionId) => {
+                assert.ifError(err);
+                const ret = JSON.parse(data);
+                assert.deepStrictEqual(ret, existBucket.value);
+                assert.strictEqual(raftSessionId, undefined);
+                done();
+            });
         });
 
         it('should get bucket and object with raftSessionId', done => {
             includeRaftSessionIdHeader = true;
-            client.getBucketAndObject(existBucket.name, existObject.name, reqUids,
-                (err, data, raftSessionId) => {
-                    assert.ifError(err);
-                    const ret = JSON.parse(data);
-                    assert.deepStrictEqual(ret, existObject.value);
-                    assert.strictEqual(raftSessionId, existBucket.bucketInformation.raftSessionId);
-                    done();
-                });
+            client.getBucketAndObject(existBucket.name, existObject.name, reqUids, (err, data, raftSessionId) => {
+                assert.ifError(err);
+                const ret = JSON.parse(data);
+                assert.deepStrictEqual(ret, existObject.value);
+                assert.strictEqual(raftSessionId, existBucket.bucketInformation.raftSessionId);
+                done();
+            });
         });
 
         it('should get bucket and object without raftSessionId when header absent', done => {
             includeRaftSessionIdHeader = false;
-            client.getBucketAndObject(existBucket.name, existObject.name, reqUids,
-                (err, data, raftSessionId) => {
-                    assert.ifError(err);
-                    const ret = JSON.parse(data);
-                    assert.deepStrictEqual(ret, existObject.value);
-                    assert.strictEqual(raftSessionId, undefined);
-                    done();
-                });
+            client.getBucketAndObject(existBucket.name, existObject.name, reqUids, (err, data, raftSessionId) => {
+                assert.ifError(err);
+                const ret = JSON.parse(data);
+                assert.deepStrictEqual(ret, existObject.value);
+                assert.strictEqual(raftSessionId, undefined);
+                done();
+            });
         });
 
         it('should get Raft informations on an existing bucket', done => {
-            client.getRaftInformation(existBucket.name, reqUids,
-                (err, data) => {
-                    const ret = JSON.parse(data);
-                    assert.deepStrictEqual(ret, existBucket.raftInformation);
-                    done(err);
-                });
+            client.getRaftInformation(existBucket.name, reqUids, (err, data) => {
+                const ret = JSON.parse(data);
+                assert.deepStrictEqual(ret, existBucket.raftInformation);
+                done(err);
+            });
         });
 
         it('should get Raft informations on an unexisting bucket', done => {
-            client.getRaftInformation(newBucketName, reqUids,
-                err => {
-                    assert(err.is.NoSuchBucket);
-                    assert.strictEqual(err.isExpected, true);
+            client.getRaftInformation(newBucketName, reqUids, err => {
+                assert(err.is.NoSuchBucket);
+                assert.strictEqual(err.isExpected, true);
 
-                    return done();
-                });
+                return done();
+            });
         });
 
         it('should get Bucket informations on an existing bucket', done => {
-            client.getBucketInformation(existBucket.name, reqUids,
-                (err, data) => {
-                    const ret = JSON.parse(data);
-                    assert.deepStrictEqual(ret, existBucket.bucketInformation);
-                    done(err);
-                });
+            client.getBucketInformation(existBucket.name, reqUids, (err, data) => {
+                const ret = JSON.parse(data);
+                assert.deepStrictEqual(ret, existBucket.bucketInformation);
+                done(err);
+            });
         });
 
         it('should get Bucket informations on an unexisting bucket', done => {
-            client.getRaftInformation(newBucketName, reqUids,
-                err => {
-                    assert(err.is.NoSuchBucket);
-                    assert.strictEqual(err.isExpected, true);
+            client.getRaftInformation(newBucketName, reqUids, err => {
+                assert(err.is.NoSuchBucket);
+                assert.strictEqual(err.isExpected, true);
 
-                    return done();
-                });
+                return done();
+            });
         });
 
         it('should fetch non-existing bucket, sending back an error', done => {
@@ -290,7 +286,7 @@ Object.keys(env).forEach(key => {
             client.deleteBucket(existBucket.name, reqUids, done);
         });
 
-        it('should fetch non-existing bucket, sending back an error', done => {
+        it('should fail to delete a non-existing bucket, sending back an error', done => {
             client.deleteBucket(newBucketName, reqUids, err => {
                 if (err) {
                     assert(err.is.NoSuchBucket);
@@ -318,7 +314,6 @@ Object.keys(env).forEach(key => {
             });
         });
 
-
         it('should return 200 on livecheck request', done => {
             const log = e.c.createLogger();
             client.livecheck(log, err => {
@@ -330,62 +325,88 @@ Object.keys(env).forEach(key => {
         it('should be able to reuse a connection after an HTTP error status is received', done => {
             async.timesSeries(
                 10,
-                (i, next) => client.getRaftInformation(newBucketName, reqUids, err => {
-                    assert(err.is.NoSuchBucket);
-                    // trigger the node.js event loop after each iteration, to let the HTTP module
-                    // a chance to cleanup the unique connection state and reuse it
-                    setTimeout(next, 10);
-                }),
+                (i, next) =>
+                    client.getRaftInformation(newBucketName, reqUids, err => {
+                        assert(err.is.NoSuchBucket);
+                        // trigger the node.js event loop after each iteration, to let the HTTP module
+                        // a chance to cleanup the unique connection state and reuse it
+                        setTimeout(next, 10);
+                    }),
                 () => {
-                    assert(client.agent.totalSocketCount === 1,
-                        `expected total socket count to be 1, got ${client.agent.totalSocketCount}`);
+                    assert(
+                        client.agent.totalSocketCount === 1,
+                        `expected total socket count to be 1, got ${client.agent.totalSocketCount}`,
+                    );
                     done();
-                });
+                },
+            );
         });
 
         it('backup re-index: start job without re-create', done => {
             const log = e.c.createLogger();
-            client.reindexBackups(12, null, reqUids, err => {
-                assert.ifError(err);
-                return done();
-            }, log);
+            client.reindexBackups(
+                12,
+                null,
+                reqUids,
+                err => {
+                    assert.ifError(err);
+                    return done();
+                },
+                log,
+            );
         });
 
         it('backup re-index: start job with re-create params', done => {
             const log = e.c.createLogger();
-            client.reindexBackups(12, {
-                formatVersion: 2,
-                compression: 'zstd',
-                recreateMinBseq: 10,
-                recreateMaxBseq: 20,
-            }, reqUids, err => {
-                assert.ifError(err);
-                return done();
-            }, log);
+            client.reindexBackups(
+                12,
+                {
+                    formatVersion: 2,
+                    compression: 'zstd',
+                    recreateMinBseq: 10,
+                    recreateMaxBseq: 20,
+                },
+                reqUids,
+                err => {
+                    assert.ifError(err);
+                    return done();
+                },
+                log,
+            );
         });
 
         it('backup re-index: get job status', done => {
             const log = e.c.createLogger();
-            client.getBackupReindexJobStatus(12, reqUids, (err, jobStatus) => {
-                assert.ifError(err);
-                assert.deepStrictEqual(jobStatus, {
-                    startTime: '2026-01-13T00:26:50.294Z',
-                    status: 'running',
-                    repd: {
-                        id: 22,
-                        name: 'md3-cluster1',
-                    },
-                });
-                return done();
-            }, log);
+            client.getBackupReindexJobStatus(
+                12,
+                reqUids,
+                (err, jobStatus) => {
+                    assert.ifError(err);
+                    assert.deepStrictEqual(jobStatus, {
+                        startTime: '2026-01-13T00:26:50.294Z',
+                        status: 'running',
+                        repd: {
+                            id: 22,
+                            name: 'md3-cluster1',
+                        },
+                    });
+                    return done();
+                },
+                log,
+            );
         });
 
         it('backup re-index: abort job', done => {
             const log = e.c.createLogger();
-            client.abortBackupReindexJob(12, reqUids, err => {
-                assert.ifError(err);
-                return done();
-            }, log);
+            client.abortBackupReindexJob(
+                12,
+                reqUids,
+                err => {
+                    assert.ifError(err);
+                    return done();
+                },
+                log,
+            );
         });
     });
 });
@@ -456,12 +477,20 @@ describe('with a stubbed http.request', () => {
         httpRequestStub.callsFake(() => mockRequest);
 
         const log = client.createLogger();
-        client.request('GET', '/test', log, null, null, (err, body, headers) => {
-            assert.ifError(err);
-            assert.strictEqual(body, 'test body');
-            assert.strictEqual(headers, undefined);
-            done();
-        }, false);
+        client.request(
+            'GET',
+            '/test',
+            log,
+            null,
+            null,
+            (err, body, headers) => {
+                assert.ifError(err);
+                assert.strictEqual(body, 'test body');
+                assert.strictEqual(headers, undefined);
+                done();
+            },
+            false,
+        );
     });
 
     it('should return body and headers when returnHeaders is true', done => {
@@ -479,11 +508,19 @@ describe('with a stubbed http.request', () => {
         httpRequestStub.callsFake(() => mockRequest);
 
         const log = client.createLogger();
-        client.request('GET', '/test', log, null, null, (err, body, headers) => {
-            assert.ifError(err);
-            assert.strictEqual(body, 'test body');
-            assert.deepStrictEqual(headers, { 'x-scal-raft-session-id': '42' });
-            done();
-        }, true);
+        client.request(
+            'GET',
+            '/test',
+            log,
+            null,
+            null,
+            (err, body, headers) => {
+                assert.ifError(err);
+                assert.strictEqual(body, 'test body');
+                assert.deepStrictEqual(headers, { 'x-scal-raft-session-id': '42' });
+                done();
+            },
+            true,
+        );
     });
 });
